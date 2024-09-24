@@ -16,6 +16,14 @@ public class UnidadDidactica {
     private String evaluacion;
     private String descripcion;
 
+    public UnidadDidactica(String acronimoInput, String tituloInput, String evaluacionInput, String descripcionInput){
+        //TODO Meter un ID autoincremental que lo asigne en base a las UD que haya ya creadas.
+        this.acronimo = acronimoInput;
+        this.titulo= tituloInput;
+        this.evaluacion = evaluacionInput;
+        this.descripcion = descripcionInput;
+    }
+
     public int getId() {
         return id;
     }
