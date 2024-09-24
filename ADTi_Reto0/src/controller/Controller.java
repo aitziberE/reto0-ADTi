@@ -41,7 +41,7 @@ public class Controller {
      */
     final String SELECTenunciado = "SELECT e.* FROM Enunciado e JOIN UnidadDidactica_Enunciado ue "
             + "ON e.id = ue.enunciado_id JOIN UnidadDidactica ud ON ud.id = ue.unidad_didactica_id WHERE ud.acronimo = ?";
-
+    final String SELECTIdEnunciado = "SELECT id FROM Enunciado WHERE id = ?";
     /**
      * Consultar en que convocatorias se ha utilizado un enunciado concreto.
      */
@@ -87,6 +87,10 @@ public class Controller {
             conection.closeConnection(stmt, con);
         }
 
+    }
+    
+    public void comprobarEnunciado(){
+        
     }
 
     public void crearConvocatoria(ConvocatoriaExamen ca, LocalDateTime fecha, Enunciado enu) throws CreateException {
