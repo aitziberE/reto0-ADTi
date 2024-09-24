@@ -57,29 +57,60 @@ public class Main {
         String evaluacionUD = Util.introducirCadena();
         System.out.println("Descripción:");
         String descripcionUD = Util.introducirCadena();
-
+        
         //TODO Tirar select con los datos previos para crear la UD
         
-    }     
-    
-    private static void createEnunciado(){
+    }   
+
+    private static void createConvocatoriaExamen(){
+        System.out.println("Introduzca los siguientes datos de la unidad didáctica a crear: \nTítulo:");
+        String convocatoriaUD = Util.introducirCadena();
+        System.out.println("Acrónimo:");
+        String descripcionUD = Util.introducirCadena();
+        System.out.println("Evaluación:");
+        LocalDate fechaUD = Util.leerFechaAMD();
+        System.out.println("Descripción:");
+        String cursoUD = Util.introducirCadena();
         
+        //aqui no se le asigna enunciado
+    }     
+
+    private static void createEnunciado(){
+
+        private String descripcion;
+        private Dificultad nivel;
+        private boolean disponible;
+        private String ruta;
+        private ArrayList<ConvocatoriaExamen> convocatoriaExamenList;
+        private ArrayList<UnidadDidactica> unidadDidacticaList;
+        //los dos arrays preguntar por id y añadir al arraylist el objeto con ese id
+        //agregar las unidades didácticas
+        //se asociará a este enunciado la convocatoria para la que se crea
     }
     
     private static void checkEnunciado(){
-        
+        // Consultar los enunciados de examen en los que se trata una unidad didáctica concreta.
+
+        convocatoriasList <ConvocatoriaExamen> () = metodoDelControlador(id enunciado)
+        //pedir  moreno ese metodo, se lo cuentas
     }
     
     private static void checkConvocatoria(){
-        
+        // Consultar en que convocatorias se ha utilizado un enunciado concreto.
     }
     
     private static void viewDocument(){
-        
+        // Visualizar el documento de texto asociado a un enunciado.
+        //aplicar lógica de las rutas.
+        // dentro de resources meter algunos .txt con info del enunciado 
+        //que el usuario de el id y moreno nos devuelva la ruta que tiene ese enunciado
+        // desde aqui se abre esa ruta que corresponde a un archivo de resources
     }
     
     private static void asignEnunciado(){
-        
+        // pedir id de convocatoria e id de enunciado
+        // sobreescribir el enunciado que tenia esa convocatoria o asignarselo sin más.
+        boolean añadidoConExito = metodMOreno(id conv, id enunc)
     }
 
     private static int menu() {
