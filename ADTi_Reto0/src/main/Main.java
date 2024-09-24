@@ -49,6 +49,16 @@ public class Main {
     }
     
     private static void createUnidad(){
+        System.out.println("Introduzca los siguientes datos de la unidad didáctica a crear: \nTítulo:");
+        String tituloUD = Util.introducirCadena();
+        System.out.println("Acrónimo:");
+        String acronimoUD = Util.introducirCadena();
+        System.out.println("Evaluación:");
+        String evaluacionUD = Util.introducirCadena();
+        System.out.println("Descripción:");
+        String descripcionUD = Util.introducirCadena();
+
+        //TODO Tirar select con los datos previos para crear la UD
         
     }     
     
