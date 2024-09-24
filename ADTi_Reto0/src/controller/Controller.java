@@ -26,13 +26,13 @@ public class Controller implements IController{
     /**
      * Crear una unidad didáctica (Unidad) y convocatoria (Convocatoria) de examen.
      */
-    final String INSERTunidaddidactica = "INSERT INTO UnidadDidactica VALUES (?, ?, ?, ?, ?)";
+    final String INSERTunidaddidactica = "INSERT INTO UnidadDidactica VALUES (?, ?, ?, ?)";
     final String INSERTconvocatoria = "INSERT INTO ConvocatoriaExamen VALUES (?, ?, ?, ?, ?)";
 
     /**
      * Crear un enunciado de examen agregando las unidades didácticas que va a referir. También se asociará a este enunciado la convocatoria para la que se crea.
      */
-    final String INSERTenunciado = "INSERT INTO Enunciado VALUES (?, ?, ?, ?, ?)";
+    final String INSERTenunciado = "INSERT INTO Enunciado VALUES (?, ?, ?, ?)";
 
     /**
      * Consultar los enunciados de una unidad didáctica concreta (nombre)
@@ -118,7 +118,30 @@ public class Controller implements IController{
 
     @Override
     public void crearEnunciado(String descripcion, String nivel, boolean disponible, String ruta) throws CreateException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // Abrimos la conexión
+        con = conection.openConnection();
+        try {
+            stmt = con.prepareStatement(INSERTunidaddidactica);
+
+            stmt.setString(1, descripcion);
+            stmt.setString(2, nivel);
+            stmt.setBoolean(3, disponible);
+            stmt.setString(4, ruta);
+
+            // Ejecuto la actualización de la base de datos
+            stmt.executeUpdate();
+
+        } catch (SQLException e1) {
+
+            System.out.println("Error al ejecutar la query");
+            String error = "Error al crear la UD";
+            CreateException ex = new CreateException(error);
+            throw ex;
+
+        } finally {
+            // Cierro la conexión con la base de datos
+            conection.closeConnection(stmt, con);
+        }
     }
 
     @Override
