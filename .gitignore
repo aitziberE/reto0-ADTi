@@ -2,3 +2,5 @@
 nbproject/private/*
 ADTi_Reto0/nbproject/private/
 *.class
+/ADTi_Reto0/build/
+/ADTi_Reto0/dist/
