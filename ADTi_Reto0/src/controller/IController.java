@@ -12,7 +12,7 @@ public interface IController {
 
     public void crearEnunciado(String descripcion, String nivel, boolean disponible, String ruta) throws CreateException;
 
-    public Enunciado consultarEnunciado(int enunciadoId)  throws CreateException;
+    public Enunciado consultarEnunciado(String ud)  throws CreateException;
 
     public String consultarConvocatoriaPorEnunciado(int enunciadoId)  throws CreateException;
 

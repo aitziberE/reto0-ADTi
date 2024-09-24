@@ -8,29 +8,34 @@ package controller;
 import excepciones.CreateException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import model.Dificultad;
 import model.Enunciado;
 
 /**
  *
  * @author Ander
  */
-public class Controller implements IController{
+public class Controller implements IController {
 
     private Connection con;
     private PreparedStatement stmt;
     private ConnectionOpenClose conection = new ConnectionOpenClose();
 
     /**
-     * Crear una unidad didáctica (Unidad) y convocatoria (Convocatoria) de examen.
+     * Crear una unidad didáctica (Unidad) y convocatoria (Convocatoria) de
+     * examen.
      */
     final String INSERTunidaddidactica = "INSERT INTO UnidadDidactica VALUES (?, ?, ?, ?)";
     final String INSERTconvocatoria = "INSERT INTO ConvocatoriaExamen VALUES (?, ?, ?, ?, ?)";
 
     /**
-     * Crear un enunciado de examen agregando las unidades didácticas que va a referir. También se asociará a este enunciado la convocatoria para la que se crea.
+     * Crear un enunciado de examen agregando las unidades didácticas que va a
+     * referir. También se asociará a este enunciado la convocatoria para la que
+     * se crea.
      */
     final String INSERTenunciado = "INSERT INTO Enunciado VALUES (?, ?, ?, ?)";
 
@@ -51,21 +56,21 @@ public class Controller implements IController{
     /**
      * crearUnidadDidactica crearConvocatoria crearEnunciado
      *
-     * consultarEnunciado consultarConvocatoriaPorEnunciado consultarDescripcionEnunciado
+     * consultarEnunciado consultarConvocatoriaPorEnunciado
+     * consultarDescripcionEnunciado
      *
      * asignarEnunciadoAConvocatoria
      *
      * @param ud
      * @throws CreateException
      */
-
     @Override
     public void crearUnidadDidactica(String acronimo, String titulo, String evaluacion, String descripcion) throws CreateException {
         // Abrimos la conexión
         con = conection.openConnection();
         try {
             stmt = con.prepareStatement(INSERTunidaddidactica);
-            
+
             stmt.setString(1, acronimo);
             stmt.setString(2, titulo);
             stmt.setString(3, evaluacion);
@@ -106,7 +111,7 @@ public class Controller implements IController{
         } catch (SQLException e1) {
 
             System.out.println("Error al ejecutar la query");
-            String error = "Error al crear la UD";
+            String error = "Error al crear la convocatoria";
             CreateException ex = new CreateException(error);
             throw ex;
 
@@ -134,7 +139,7 @@ public class Controller implements IController{
         } catch (SQLException e1) {
 
             System.out.println("Error al ejecutar la query");
-            String error = "Error al crear la UD";
+            String error = "Error al crear el enunciado";
             CreateException ex = new CreateException(error);
             throw ex;
 
@@ -145,8 +150,46 @@ public class Controller implements IController{
     }
 
     @Override
-    public Enunciado consultarEnunciado(int enunciadoId) throws CreateException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Enunciado consultarEnunciado(String ud) throws CreateException {
+        // Tenemos que definir el ResultSet para recoger el resultado de la consulta
+        ResultSet rs = null;
+        Enunciado enu = null;
+
+        // Abro la conexióm
+        con = conection.openConnection();
+
+        try {
+            stmt = con.prepareStatement(SELECTenunciado);
+
+            // Cargamos los parametros
+            stmt.setString(1, ud);
+
+            rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                enu = new Enunciado();
+                enu.setId(rs.getInt("id"));
+                enu.setDescripcion(rs.getString("descripcion"));
+                enu.setNivel((Dificultad) rs.getString("nivel"));
+            } else {
+                enu = null;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error de SQL");
+            e.printStackTrace();
+        } finally {
+            // Cerramos ResultSet
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    System.out.println("Error en cierre del ResultSet");
+                }
+            }
+            conection.closeConnection(stmt, con);
+        }
+
+        return enu;
     }
 
     @Override
