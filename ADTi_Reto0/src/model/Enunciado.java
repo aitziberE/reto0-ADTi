@@ -36,6 +36,13 @@ public class Enunciado {
         this.unidadDidacticaList=unidadDidacticaList;
     }
 
+    public Enunciado(String descripcion, Dificultad nivel, boolean disponible, String ruta) {
+        this.descripcion = descripcion;
+        this.nivel = nivel;
+        this.disponible = disponible;
+        this.ruta = ruta;
+    }
+    
     public int getId() {
         return id;
     }
