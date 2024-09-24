@@ -17,18 +17,7 @@ public class Controller {
     private Connection con;
     private PreparedStatement stmt;
     private ConnectionOpenClose conection = new ConnectionOpenClose();
-
-    /*
-    crearUnidadDidactica
-    crearConvocatoria
-    crearEnunciado
-
-    consultarEnunciado
-    consultarConvocatoriaPorEnunciado
-    consultarDescripcionEnunciado
-
-    asignarEnunciadoAConvocatoria
-     */
+    
     /**
      * Crear una unidad didáctica (Unidad) y convocatoria (Convocatoria) de examen.
      */
@@ -41,8 +30,50 @@ public class Controller {
      */
     final String INSERTenunciado = "INSERT INTO Enunciado VALUES (?, ?, ?, ?, ?)";
 
-    final String SELECTenunciado = "SELECT * FROM Enunciado WHERE username = ? AND contrasena = ?";
+    /**
+     * Consultar los enunciados de una unidad didáctica concreta (nombre)
+     */
+    final String SELECTenunciado = "SELECT e.* FROM Enunciado e JOIN UnidadDidactica_Enunciado ue "
+            + "ON e.id = ue.enunciado_id JOIN UnidadDidactica ud ON ud.id = ue.unidad_didactica_id WHERE ud.acronimo = ?";
 
-    final String UPDATEcoleccion = "UPDATE Coleccion SET armaFav = ?, skinFav = ?, agenteFav = ? WHERE dni_jugador = ?";
+    /**
+     * Consultar en que convocatorias se ha utilizado un enunciado concreto.
+     */
+    final String SELECTconvocatoria = "SELECT c.* FROM ConvocatoriaExamen c JOIN Enunciado e ON c.enunciado_id = e.id WHERE e.id = ?";
+    final String SELECTdescripcion = "SELECT descripcion FROM Enunciado WHERE id = ?";
 
+    
+    final String UPDATEconvocatoria = "UPDATE ConvocatoriaExamen SET enunciado_id WHERE convocatoria = ?";
+    
+	public void registro(UnidadDidactica ud) throws CreateException {
+		// Abrimos la conexión
+		con = conection.openConnection();
+		try {
+			stmt = con.prepareStatement(INSERTjugador);
+
+			stmt.setString(1, usuario.getDni());
+			stmt.setString(2, usuario.getNombre());
+			stmt.setString(3, usuario.getApellido());
+			stmt.setString(4, usuario.getUsername());
+			stmt.setString(5, usuario.getContrasena());
+			stmt.setString(6, usuario.getSexo());
+			stmt.setDate(7, usuario.getNacimiento());
+
+			// Ejecuto la actualización de la base de datos
+			stmt.executeUpdate();
+
+		} catch (SQLException e1) {
+
+			System.out.println("Error al ejecutar la query");
+			String error = "Error al registrar el jugador";
+			CreateException ex = new CreateException(error);
+			throw ex;
+
+		} finally {
+			// Cierro la conexión con la base de datos
+			conection.closeConnection(stmt, con);
+		}
+
+	}
+    
 }
