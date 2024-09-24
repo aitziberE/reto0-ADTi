@@ -5,11 +5,12 @@
  */
 package model;
 
+import java.util.ArrayList;
 import utilidades.Util;
 
 /**
  *
- * @author PAIA Group
+ * @author Aitziber
  */
 public class Enunciado {
 
@@ -18,13 +19,25 @@ public class Enunciado {
     private Dificultad nivel;
     private boolean disponible;
     private String ruta;
+    private ArrayList<ConvocatoriaExamen> convocatoriaExamenList;
+    private ArrayList<UnidadDidactica> unidadDidacticaList;
+    
+    public Enunciado(){
+        this.convocatoriaExamenList=new ArrayList<>();
+        this.unidadDidacticaList=new ArrayList<>();
+    }
+    
+    public Enunciado(String descripcion, Dificultad nivel,boolean disponible, String ruta, ArrayList<ConvocatoriaExamen> convocatoriaExamenList, ArrayList<UnidadDidactica> unidadDidacticaList){
+        this.descripcion=descripcion;
+        this.nivel=nivel;
+        this.disponible=disponible;
+        this.ruta=ruta;
+        this.convocatoriaExamenList=convocatoriaExamenList;
+        this.unidadDidacticaList=unidadDidacticaList;
+    }
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getDescripcion() {
@@ -58,7 +71,24 @@ public class Enunciado {
     public void setRuta(String ruta) {
         this.ruta = ruta;
     }
-    /*
+    
+    public ArrayList<ConvocatoriaExamen> getConvocatoriaExamenList() {
+        return convocatoriaExamenList;
+    }
+
+    public void setConvocatoriaExamenList(ArrayList<ConvocatoriaExamen> convocatoriaExamenList) {
+        this.convocatoriaExamenList = convocatoriaExamenList;
+    }
+
+    public ArrayList<UnidadDidactica> getUnidadDidacticaList() {
+        return unidadDidacticaList;
+    }
+
+    public void setUnidadDidacticaList(ArrayList<UnidadDidactica> unidadDidacticaList) {
+        this.unidadDidacticaList = unidadDidacticaList;
+    }
+
+       /*
     public void setDificultad(String dificultad) {
         boolean validez = false;
         do {
@@ -85,4 +115,9 @@ public class Enunciado {
     }
     */
 
+    @Override
+    public String toString() {
+        return "Enunciado{" + ", descripcion=" + descripcion + ", nivel=" + nivel + ", disponible=" + disponible + ", ruta=" + ruta + ", convocatoriaExamenList=" + convocatoriaExamenList + ", unidadDidacticaList=" + unidadDidacticaList + '}';
+    }
+    
 }
