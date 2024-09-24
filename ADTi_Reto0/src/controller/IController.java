@@ -1,16 +1,14 @@
 package controller;
 
 import excepciones.CreateException;
-import model.ConvocatoriaExamen;
+import java.time.LocalDate;
 import model.Enunciado;
-import model.UnidadDidactica;
-import java.util.List;
 
 public interface IController {
 
     public void crearUnidadDidactica(String acronimo, String titulo, String evaluacion, String descripcion) throws CreateException;
 
-    public void crearConvocatoria(String convocatoria, String descripcion, java.util.Date fecha, String curso, int enunciadoId) throws CreateException;
+    public void crearConvocatoria(String convocatoria, String descripcion, LocalDate fecha, String curso, int enunciadoId) throws CreateException;
 
     public void crearEnunciado(String descripcion, String nivel, boolean disponible, String ruta) throws CreateException;
 

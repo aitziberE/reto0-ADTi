@@ -9,17 +9,15 @@ import excepciones.CreateException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import model.ConvocatoriaExamen;
 import model.Enunciado;
-import model.UnidadDidactica;
 
 /**
  *
  * @author Ander
  */
-public class Controller {
+public class Controller implements IController{
 
     private Connection con;
     private PreparedStatement stmt;
@@ -60,17 +58,18 @@ public class Controller {
      * @param ud
      * @throws CreateException
      */
-    public void crearUnidadDidactica(UnidadDidactica ud) throws CreateException {
+
+    @Override
+    public void crearUnidadDidactica(String acronimo, String titulo, String evaluacion, String descripcion) throws CreateException {
         // Abrimos la conexión
         con = conection.openConnection();
         try {
             stmt = con.prepareStatement(INSERTunidaddidactica);
-
-            stmt.setInt(1, ud.getId());
-            stmt.setString(2, ud.getAcronimo());
-            stmt.setString(3, ud.getTitulo());
-            stmt.setString(4, ud.getEvaluacion());
-            stmt.setString(5, ud.getDescripcion());
+            
+            stmt.setString(1, acronimo);
+            stmt.setString(2, titulo);
+            stmt.setString(3, evaluacion);
+            stmt.setString(4, descripcion);
 
             // Ejecuto la actualización de la base de datos
             stmt.executeUpdate();
@@ -86,24 +85,20 @@ public class Controller {
             // Cierro la conexión con la base de datos
             conection.closeConnection(stmt, con);
         }
-
-    }
-    
-    public void comprobarEnunciado(){
-        
     }
 
-    public void crearConvocatoria(ConvocatoriaExamen ca, LocalDateTime fecha, Enunciado enu) throws CreateException {
+    @Override
+    public void crearConvocatoria(String convocatoria, String descripcion, LocalDate fecha, String curso, int enunciadoId) throws CreateException {
         // Abrimos la conexión
         con = conection.openConnection();
         try {
             stmt = con.prepareStatement(INSERTunidaddidactica);
 
-            stmt.setString(1, ca.getConvocatoria());
-            stmt.setString(2, ca.getDescripcion());
+            stmt.setString(1, convocatoria);
+            stmt.setString(2, descripcion);
             stmt.setString(3, fecha.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-            stmt.setString(4, ca.getCurso());
-            stmt.setInt(5, enu.getId());
+            stmt.setString(4, curso);
+            stmt.setInt(5, enunciadoId);
 
             // Ejecuto la actualización de la base de datos
             stmt.executeUpdate();
@@ -119,7 +114,31 @@ public class Controller {
             // Cierro la conexión con la base de datos
             conection.closeConnection(stmt, con);
         }
+    }
 
+    @Override
+    public void crearEnunciado(String descripcion, String nivel, boolean disponible, String ruta) throws CreateException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Enunciado consultarEnunciado(int enunciadoId) throws CreateException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String consultarConvocatoriaPorEnunciado(int enunciadoId) throws CreateException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String consultarDescripcionEnunciado(int enunciadoId) throws CreateException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void asignarEnunciadoAConvocatoria(int enunciadoId, String convocatoria) throws CreateException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
