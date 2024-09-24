@@ -5,8 +5,15 @@
  */
 package controller;
 
+import excepciones.CreateException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import model.ConvocatoriaExamen;
+import model.Enunciado;
+import model.UnidadDidactica;
 
 /**
  *
@@ -17,16 +24,15 @@ public class Controller {
     private Connection con;
     private PreparedStatement stmt;
     private ConnectionOpenClose conection = new ConnectionOpenClose();
-    
+
     /**
      * Crear una unidad didáctica (Unidad) y convocatoria (Convocatoria) de examen.
      */
     final String INSERTunidaddidactica = "INSERT INTO UnidadDidactica VALUES (?, ?, ?, ?, ?)";
     final String INSERTconvocatoria = "INSERT INTO ConvocatoriaExamen VALUES (?, ?, ?, ?, ?)";
-    
+
     /**
-     * Crear un enunciado de examen agregando las unidades didácticas que va a referir. 
-     * También se asociará a este enunciado la convocatoria para la que se crea.
+     * Crear un enunciado de examen agregando las unidades didácticas que va a referir. También se asociará a este enunciado la convocatoria para la que se crea.
      */
     final String INSERTenunciado = "INSERT INTO Enunciado VALUES (?, ?, ?, ?, ?)";
 
@@ -42,38 +48,74 @@ public class Controller {
     final String SELECTconvocatoria = "SELECT c.* FROM ConvocatoriaExamen c JOIN Enunciado e ON c.enunciado_id = e.id WHERE e.id = ?";
     final String SELECTdescripcion = "SELECT descripcion FROM Enunciado WHERE id = ?";
 
-    
     final String UPDATEconvocatoria = "UPDATE ConvocatoriaExamen SET enunciado_id WHERE convocatoria = ?";
-    
-	public void registro(UnidadDidactica ud) throws CreateException {
-		// Abrimos la conexión
-		con = conection.openConnection();
-		try {
-			stmt = con.prepareStatement(INSERTjugador);
 
-			stmt.setString(1, usuario.getDni());
-			stmt.setString(2, usuario.getNombre());
-			stmt.setString(3, usuario.getApellido());
-			stmt.setString(4, usuario.getUsername());
-			stmt.setString(5, usuario.getContrasena());
-			stmt.setString(6, usuario.getSexo());
-			stmt.setDate(7, usuario.getNacimiento());
+    /**
+     * crearUnidadDidactica crearConvocatoria crearEnunciado
+     *
+     * consultarEnunciado consultarConvocatoriaPorEnunciado consultarDescripcionEnunciado
+     *
+     * asignarEnunciadoAConvocatoria
+     *
+     * @param ud
+     * @throws CreateException
+     */
+    public void crearUnidadDidactica(UnidadDidactica ud) throws CreateException {
+        // Abrimos la conexión
+        con = conection.openConnection();
+        try {
+            stmt = con.prepareStatement(INSERTunidaddidactica);
 
-			// Ejecuto la actualización de la base de datos
-			stmt.executeUpdate();
+            stmt.setInt(1, ud.getId());
+            stmt.setString(2, ud.getAcronimo());
+            stmt.setString(3, ud.getTitulo());
+            stmt.setString(4, ud.getEvaluacion());
+            stmt.setString(5, ud.getDescripcion());
 
-		} catch (SQLException e1) {
+            // Ejecuto la actualización de la base de datos
+            stmt.executeUpdate();
 
-			System.out.println("Error al ejecutar la query");
-			String error = "Error al registrar el jugador";
-			CreateException ex = new CreateException(error);
-			throw ex;
+        } catch (SQLException e1) {
 
-		} finally {
-			// Cierro la conexión con la base de datos
-			conection.closeConnection(stmt, con);
-		}
+            System.out.println("Error al ejecutar la query");
+            String error = "Error al crear la UD";
+            CreateException ex = new CreateException(error);
+            throw ex;
 
-	}
-    
+        } finally {
+            // Cierro la conexión con la base de datos
+            conection.closeConnection(stmt, con);
+        }
+
+    }
+
+    public void crearConvocatoria(ConvocatoriaExamen ca, LocalDateTime fecha, Enunciado enu) throws CreateException {
+        // Abrimos la conexión
+        con = conection.openConnection();
+        try {
+            stmt = con.prepareStatement(INSERTunidaddidactica);
+
+            stmt.setString(1, ca.getConvocatoria());
+            stmt.setString(2, ca.getDescripcion());
+            stmt.setString(3, fecha.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            stmt.setString(4, ca.getCurso());
+            stmt.setInt(5, enu.getId());
+
+            // Ejecuto la actualización de la base de datos
+            stmt.executeUpdate();
+
+        } catch (SQLException e1) {
+
+            System.out.println("Error al ejecutar la query");
+            String error = "Error al crear la UD";
+            CreateException ex = new CreateException(error);
+            throw ex;
+
+        } finally {
+            // Cierro la conexión con la base de datos
+            conection.closeConnection(stmt, con);
+        }
+
+    }
+
 }
