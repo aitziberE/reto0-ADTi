@@ -34,6 +34,7 @@ public class Main {
         do {
             menu = menu();
             switch (menu) {
+                //aplicar createConvocatoriaExamen(c);
                 case 1:
                     createUnidad(c);
                     break;
@@ -87,11 +88,9 @@ public class Main {
             LocalDate fecha = Util.leerFechaAMD();
             String curso = Util.introducirCadena("Curso");
             System.out.println("enunciado:");
-            
             int enunciado = Util.leerInt();
             
             c.crearConvocatoria(convocatoria, descripcion, fecha, curso, enunciado);
-            //aqui no se le asigna enunciado
             
             // lo que habia hecho el iñigo
             /*      String nivelInput;
@@ -128,16 +127,30 @@ public class Main {
     }     
 
     private static void createEnunciado(Controller c){
-
-        // private String descripcion;
-        // private Dificultad nivel;
-        // private boolean disponible;
-        // private String ruta;
-        // private ArrayList<ConvocatoriaExamen> convocatoriaExamenList;
-        // private ArrayList<UnidadDidactica> unidadDidacticaList;
-        //los dos arrays preguntar por id y añadir al arraylist el objeto con ese id
-        //agregar las unidades didácticas
-        //se asociará a este enunciado la convocatoria para la que se crea
+        try {
+            Dificultad nivel = Dificultad.BAJA;
+            
+            System.out.println("Introduzca los siguientes datos del enunciado:");
+            String descripcion = Util.introducirCadena("Descripcion:");
+            
+            nivel = nivel.validarDificultad();
+            String nivelString = nivel.name();
+            
+            System.out.println("¿Está disponible el enunciado? (si/no):");
+            boolean disponible = Util.isBoolean();
+            String ruta = Util.introducirCadena("Ruta:");
+            
+            c.crearEnunciado(descripcion, nivelString, disponible, ruta);
+           
+            // inicializar los arrays, revisar caso de uso
+            // private ArrayList<ConvocatoriaExamen> convocatoriaExamenList;
+            // private ArrayList<UnidadDidactica> unidadDidacticaList;
+            //los dos arrays preguntar por id y añadir al arraylist el objeto con ese id
+            //agregar las unidades didácticas
+            //se asociará a este enunciado la convocatoria para la que se crea
+        } catch (CreateException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private static void checkEnunciado(Controller c){
