@@ -19,5 +19,5 @@ public interface IController {
 
     public String consultarDescripcionEnunciado(int enunciadoId)  throws CreateException;
 
-    public void asignarEnunciadoAConvocatoria(int enunciadoId, String convocatoria)  throws CreateException;
+    public boolean asignarEnunciadoAConvocatoria(int enunciadoId, String convocatoria)  throws CreateException;
 }

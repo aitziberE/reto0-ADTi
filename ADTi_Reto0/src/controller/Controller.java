@@ -20,13 +20,15 @@ import model.Enunciado;
 /**
  *
  * @author Ander
+ * @version 1.0
  */
 public class Controller implements IController {
 
     private Connection con;
     private PreparedStatement stmt;
-    private ConnectionOpenClose conection = new ConnectionOpenClose();
+    private final ConnectionOpenClose conection = new ConnectionOpenClose();
 
+    //INSERTS
     /**
      * Crear una unidad didáctica (Unidad) y convocatoria (Convocatoria) de
      * examen.
@@ -41,31 +43,31 @@ public class Controller implements IController {
      */
     final String INSERTenunciado = "INSERT INTO Enunciado VALUES (?, ?, ?, ?)";
 
+    //SELECTS
     /**
      * Consultar los enunciados de una unidad didáctica concreta (nombre)
      */
     final String SELECTenunciado = "SELECT e.* FROM Enunciado e JOIN UnidadDidactica_Enunciado ue "
             + "ON e.id = ue.enunciado_id JOIN UnidadDidactica ud ON ud.id = ue.unidad_didactica_id WHERE ud.acronimo = ?";
+    /**
+     * Devuelve el enunciado mediante la ID
+     */
     final String SELECTIdEnunciado = "SELECT * FROM Enunciado WHERE id = ?";
     /**
      * Consultar en que convocatorias se ha utilizado un enunciado concreto.
      */
     final String SELECTconvocatoria = "SELECT c.* FROM ConvocatoriaExamen c JOIN Enunciado e ON c.enunciado_id = e.id WHERE e.id = ?";
-    final String SELECTdescripcion = "SELECT descripcion FROM Enunciado WHERE id = ?";
-
-    final String UPDATEconvocatoria = "UPDATE ConvocatoriaExamen SET enunciado_id WHERE convocatoria = ?";
-
     /**
-     * crearUnidadDidactica crearConvocatoria crearEnunciado
-     *
-     * consultarEnunciado consultarConvocatoriaPorEnunciado
-     * consultarDescripcionEnunciado
-     *
-     * asignarEnunciadoAConvocatoria
-     *
-     * @param ud
-     * @throws CreateException
+     * Visualizar el documento de texto asociado a un enunciado
      */
+    final String SELECTdescripcion = "SELECT descripcion FROM Enunciado WHERE id = ?";
+    
+    //UPDATE
+    /**
+     * Asignar un enunciado a una convocatoria
+     */
+    final String UPDATEconvocatoria = "UPDATE ConvocatoriaExamen SET enunciado_id = ? WHERE convocatoria = ?";
+
     @Override
     public void crearUnidadDidactica(String acronimo, String titulo, String evaluacion, String descripcion) throws CreateException {
         // Abrimos la conexión
@@ -286,12 +288,71 @@ public class Controller implements IController {
 
     @Override
     public String consultarDescripcionEnunciado(int enunciadoId) throws CreateException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // Tenemos que definir el ResultSet para recoger el resultado de la consulta
+        ResultSet rs = null;
+        String texto = null;
+
+        // Abro la conexióm
+        con = conection.openConnection();
+
+        try {
+            stmt = con.prepareStatement(SELECTdescripcion);
+
+            // Cargamos los parametros
+            stmt.setInt(1, enunciadoId);
+
+            rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                texto = rs.getString("descripcion");
+            } else {
+                texto = null;
+            }
+        } catch (SQLException e) {
+
+            System.out.println("Error al ejecutar la query");
+            String error = "Error al consultar el enunciado";
+            CreateException ex = new CreateException(error);
+            throw ex;
+        } finally {
+            // Cerramos ResultSet
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    System.out.println("Error en cierre del ResultSet");
+                    String error = "Error al consultar el enunciado";
+                    CreateException e1 = new CreateException(error);
+                    throw e1;
+                }
+            }
+            conection.closeConnection(stmt, con);
+        }
+        return texto;
     }
 
     @Override
-    public void asignarEnunciadoAConvocatoria(int enunciadoId, String convocatoria) throws CreateException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean asignarEnunciadoAConvocatoria(int enunciadoId, String convocatoria) throws CreateException {
+        boolean cambios = false;
+        // Abrimos la conexión
+        con = conection.openConnection();
+        try {
+            stmt = con.prepareStatement(UPDATEconvocatoria);
+
+            stmt.setInt(1, enunciadoId);
+            stmt.setString(2, convocatoria);
+
+            if (stmt.executeUpdate() == 1) {
+                cambios = true;
+            }
+        } catch (SQLException e1) {
+            String error = "Error al modificar la convocatoria";
+            CreateException ex = new CreateException(error);
+            throw ex;
+        } finally {
+            conection.closeConnection(stmt, con);
+        }
+        return cambios;
     }
 
 }
