@@ -229,6 +229,24 @@ public class Util {
 		} while (error);
 		return cadena;
 	}
+        
+        public static String introducirCadena(String mensaje) {
+		String cadena = "";
+		boolean error;
+		InputStreamReader entrada = new InputStreamReader(System.in);
+		BufferedReader teclado = new BufferedReader(entrada);
+		do {
+			error = false;
+			try {
+				System.out.println(mensaje);
+				cadena = teclado.readLine();
+			} catch (IOException e) {
+				System.out.println("Error en la entrada de datos");
+				error = true;
+			}
+		} while (error);
+		return cadena;
+	}
 
 	public static boolean isBoolean() {
 		String respu;

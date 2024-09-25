@@ -9,12 +9,15 @@ import utilidades.Util;
 import model.*;
 import java.util.ArrayList;
 import java.time.LocalDate;
+import controller.Controller;
+import excepciones.CreateException;
 
 /**
  *
  * @author Aitziber, Iñigo
  */
 public class Main {
+     
 
     /**
      * menu = Variable para estsablecer las opciones del menú.
@@ -22,27 +25,30 @@ public class Main {
      * @param args
      */
     public static void main(String[] args) {
+        
+        Controller c = new Controller();
+        
         int menu = 0;
         do {
             menu = menu();
             switch (menu) {
                 case 1:
-                    createUnidad();
+                    createUnidad(c);
                     break;
                 case 2:
-                    createEnunciado();
+                    createEnunciado(c);
                     break;
                 case 3:
-                    checkEnunciado();
+                    checkEnunciado(c);
                     break;
                 case 4:
-                    checkConvocatoria();
+                    checkConvocatoria(c);
                     break;
                 case 5:
-                    viewDocument();
+                    viewDocument(c);
                     break;
                 case 6:
-                    asignEnunciado();
+                    asignEnunciado(c);
                     break;
                 case 0:
                     System.out.println("Terminando ejecución del programa...");
@@ -54,21 +60,23 @@ public class Main {
         } while (menu != 0);
     }
 
-    private static void createUnidad() {
-        System.out.println("Introduzca los siguientes datos de la unidad didáctica a crear: \nTítulo:");
-        String tituloUD = Util.introducirCadena();
-        System.out.println("Acrónimo:");
-        String acronimoUD = Util.introducirCadena();
-        System.out.println("Evaluación:");
-        String evaluacionUD = Util.introducirCadena();
-        System.out.println("Descripción:");
-        String descripcionUD = Util.introducirCadena();
+    private static void createUnidad(Controller c) {
+        System.out.println("Introduzca los siguientes datos de la unidad didáctica a crear:");
+        String titulo = Util.introducirCadena("Título:");
+        String acronimo = Util.introducirCadena("Acrónimo:");
+        String evaluacion = Util.introducirCadena("Evaluación:");
+        String descripcion = Util.introducirCadena("Descripción:");
         
-        //TODO Tirar select con los datos previos para crear la UD
+       try {
+        c.crearUnidadDidactica(acronimo, titulo, evaluacion, descripcion);
+        System.out.println("Unidad didáctica creada exitosamente.");
+        } catch (CreateException e) {
+            System.err.println("Error al crear la unidad didáctica: " + e.getMessage());
+        }
         
     }   
 
-    private static void createConvocatoriaExamen(){
+    private static void createConvocatoriaExamen(Controller c){
         System.out.println("Introduzca los siguientes datos de la unidad didáctica a crear: \nTítulo:");
         String convocatoriaUD = Util.introducirCadena();
         System.out.println("Acrónimo:");
@@ -111,7 +119,7 @@ public class Main {
         Enunciado enunciado = new Enunciado(descripcionInput, nivel, disponibleInput, rutaInput); */
     }     
 
-    private static void createEnunciado(){
+    private static void createEnunciado(Controller c){
 
         // private String descripcion;
         // private Dificultad nivel;
@@ -124,18 +132,18 @@ public class Main {
         //se asociará a este enunciado la convocatoria para la que se crea
     }
     
-    private static void checkEnunciado(){
+    private static void checkEnunciado(Controller c){
         // Consultar los enunciados de examen en los que se trata una unidad didáctica concreta.
 
         // convocatoriasList <ConvocatoriaExamen> () = metodoDelControlador(id enunciado)
         //pedir  moreno ese metodo, se lo cuentas
     }
     
-    private static void checkConvocatoria(){
+    private static void checkConvocatoria(Controller c){
         // Consultar en que convocatorias se ha utilizado un enunciado concreto.
     }
     
-    private static void viewDocument(){
+    private static void viewDocument(Controller c){
         // Visualizar el documento de texto asociado a un enunciado.
         //aplicar lógica de las rutas.
         // dentro de resources meter algunos .txt con info del enunciado 
@@ -143,7 +151,7 @@ public class Main {
         // desde aqui se abre esa ruta que corresponde a un archivo de resources
     }
     
-    private static void asignEnunciado(){
+    private static void asignEnunciado(Controller c){
         // pedir id de convocatoria e id de enunciado
         // sobreescribir el enunciado que tenia esa convocatoria o asignarselo sin más.
         // boolean añadidoConExito = metodMOreno(id conv, id enunc)
