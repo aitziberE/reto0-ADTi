@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.time.LocalDate;
 import controller.Controller;
 import excepciones.CreateException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -61,62 +63,68 @@ public class Main {
     }
 
     private static void createUnidad(Controller c) {
-        System.out.println("Introduzca los siguientes datos de la unidad didáctica a crear:");
-        String titulo = Util.introducirCadena("Título:");
-        String acronimo = Util.introducirCadena("Acrónimo:");
-        String evaluacion = Util.introducirCadena("Evaluación:");
-        String descripcion = Util.introducirCadena("Descripción:");
-        
-       try {
-        c.crearUnidadDidactica(acronimo, titulo, evaluacion, descripcion);
-        System.out.println("Unidad didáctica creada exitosamente.");
-        } catch (CreateException e) {
-            System.err.println("Error al crear la unidad didáctica: " + e.getMessage());
+        try {
+            System.out.println("Introduzca los siguientes datos de la unidad didáctica a crear:");
+            String titulo = Util.introducirCadena("Título:");
+            String acronimo = Util.introducirCadena("Acrónimo:");
+            String evaluacion = Util.introducirCadena("Evaluación:");
+            String descripcion = Util.introducirCadena("Descripción:");
+            
+            c.crearUnidadDidactica(acronimo, titulo, evaluacion, descripcion);
+        } catch (CreateException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         
     }   
 
     private static void createConvocatoriaExamen(Controller c){
-        System.out.println("Introduzca los siguientes datos de la unidad didáctica a crear: \nTítulo:");
-        String convocatoriaUD = Util.introducirCadena();
-        System.out.println("Acrónimo:");
-        String descripcionUD = Util.introducirCadena();
-        System.out.println("Evaluación:");
-        LocalDate fechaUD = Util.leerFechaAMD();
-        System.out.println("Descripción:");
-        String cursoUD = Util.introducirCadena();
-        
-        //aqui no se le asigna enunciado
-
-        // lo que habia hecho el iñigo
-   /*      String nivelInput;
-        Dificultad nivel = null;
-        boolean disponibleInput;
-
-        System.out.println("Introduzca los datos del enunciado a crear: \nDescripción:");
-        String descripcionInput = Util.introducirCadena();
-        do {
+        try {
+            System.out.println("Introduzca los siguientes datos de la convocatoria de exámen:");
+            String convocatoria = Util.introducirCadena("convocatoria");
+            String descripcion = Util.introducirCadena("descripcion");
+            System.out.println("fecha:");
+            LocalDate fecha = Util.leerFechaAMD();
+            String curso = Util.introducirCadena("Curso");
+            System.out.println("enunciado:");
+            
+            int enunciado = Util.leerInt();
+            
+            c.crearConvocatoria(convocatoria, descripcion, fecha, curso, enunciado);
+            //aqui no se le asigna enunciado
+            
+            // lo que habia hecho el iñigo
+            /*      String nivelInput;
+            Dificultad nivel = null;
+            boolean disponibleInput;
+            
+            System.out.println("Introduzca los datos del enunciado a crear: \nDescripción:");
+            String descripcionInput = Util.introducirCadena();
+            do {
             System.out.println("Dificultad: (Baja, Media, Alta)");
             nivelInput = Util.introducirCadena();
             try {
-                nivel = Dificultad.valueOf(nivelInput);
-
+            nivel = Dificultad.valueOf(nivelInput);
+            
             } catch (IllegalArgumentException e) {
-                System.out.println(e);
+            System.out.println(e);
             }
-        } while (nivelInput == null);
-
-        System.out.println("Disponibilidad: (Activado / Desactivado)");
-        if (Util.introducirCadena().equalsIgnoreCase("activado")) {
+            } while (nivelInput == null);
+            
+            System.out.println("Disponibilidad: (Activado / Desactivado)");
+            if (Util.introducirCadena().equalsIgnoreCase("activado")) {
             disponibleInput = true;
-        } else {
+            } else {
             disponibleInput = false;
+            }
+            System.out.println("Ruta:");
+            //TODO buscar forma de hacer esto
+            String rutaInput = "";
+            
+            Enunciado enunciado = new Enunciado(descripcionInput, nivel, disponibleInput, rutaInput); */
+        } catch (CreateException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("Ruta:");
-        //TODO buscar forma de hacer esto
-        String rutaInput = "";
-
-        Enunciado enunciado = new Enunciado(descripcionInput, nivel, disponibleInput, rutaInput); */
     }     
 
     private static void createEnunciado(Controller c){
