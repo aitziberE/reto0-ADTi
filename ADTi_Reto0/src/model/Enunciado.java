@@ -6,7 +6,6 @@
 package model;
 
 import java.util.ArrayList;
-import utilidades.Util;
 
 /**
  *
@@ -36,8 +35,19 @@ public class Enunciado {
         this.unidadDidacticaList=unidadDidacticaList;
     }
 
+    public Enunciado(String descripcion, Dificultad nivel, boolean disponible, String ruta) {
+        this.descripcion = descripcion;
+        this.nivel = nivel;
+        this.disponible = disponible;
+        this.ruta = ruta;
+    }
+    
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getDescripcion() {

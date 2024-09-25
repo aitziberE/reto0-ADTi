@@ -12,7 +12,6 @@ import java.time.LocalDate;
  * @author Aitziber
  */
 public class ConvocatoriaExamen {
-    private int id;
     private String convocatoria;
     private String descripcion;
     private LocalDate fecha;
@@ -29,10 +28,6 @@ public class ConvocatoriaExamen {
         this.fecha=fecha;
         this.curso=curso;
         this.enunciado=enunciado;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getConvocatoria() {
