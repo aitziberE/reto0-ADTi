@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import excepciones.CreateException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * 
@@ -23,7 +25,9 @@ public class ConnectionOpenClose {
 	private String url; // The URL for the database.
 	private String user; // The username for the database.
 	private String pass; // The password for the database.
-
+        
+        private static final Logger logger = Logger.getLogger(ConnectionOpenClose.class.getName());
+          
 	/**
 	 * Constructor that initializes the database connection parameters by reading
 	 * them from a configuration file.
@@ -47,9 +51,13 @@ public class ConnectionOpenClose {
 			con = DriverManager.getConnection(url, user, pass); // Establish the database connection using the
 // parameters from the configuration file.
 		} catch (SQLException e) {
-			String error = "Error connecting to the database"; // Define the error message.
-			CreateException er = new CreateException(error); // Create a new exception with the error message.
-			throw er; // Throw the exception.
+                    String error = "Error connecting to the database: " + e.getMessage();
+                    logger.log(Level.SEVERE, error, e);
+                    throw new CreateException(error, e);
+            
+			//String error = "Error connecting to the database"; // Define the error message.
+			//CreateException er = new CreateException(error); // Create a new exception with the error message.
+			//throw er; // Throw the exception.
 		}
 		return con; // Return the established database connection.
 	}
