@@ -154,10 +154,10 @@ public class Controller implements IController {
     }
 
     @Override
-    public Enunciado consultarEnunciado(String ud) throws CreateException {
+    public ArrayList<Enunciado> consultarEnunciado(String ud) throws CreateException {
         // Tenemos que definir el ResultSet para recoger el resultado de la consulta
         ResultSet rs = null;
-        Enunciado enu = null;
+        ArrayList<Enunciado> enunciadoList = new ArrayList<>();
 
         // Abro la conexióm
         con = conection.openConnection();
@@ -171,15 +171,15 @@ public class Controller implements IController {
             rs = stmt.executeQuery();
 
             if (rs.next()) {
-                enu = new Enunciado();
+                Enunciado enu = new Enunciado();
                 enu.setId(rs.getInt("id"));
                 enu.setDescripcion(rs.getString("descripcion"));
                 String nivelStr = rs.getString("nivel");
                 enu.setNivel(Dificultad.valueOf(nivelStr));
                 enu.setDisponible(rs.getBoolean("disponible"));
                 enu.setRuta(rs.getString("ruta"));
-            } else {
-                enu = null;
+                
+                enunciadoList.add(enu);
             }
         } catch (SQLException e) {
 
@@ -201,7 +201,7 @@ public class Controller implements IController {
             }
             conection.closeConnection(stmt, con);
         }
-        return enu;
+        return enunciadoList;
     }
 
     @Override

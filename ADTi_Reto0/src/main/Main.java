@@ -157,12 +157,8 @@ public class Main {
             
             c.crearEnunciado(descripcion, nivelString, disponible, ruta);
            
-            // inicializar los arrays, revisar caso de uso
-            // private ArrayList<ConvocatoriaExamen> convocatoriaExamenList;
-            // private ArrayList<UnidadDidactica> unidadDidacticaList;
-            //los dos arrays preguntar por id y añadir al arraylist el objeto con ese id
-            //agregar las unidades didácticas
-            //se asociará a este enunciado la convocatoria para la que se crea
+            //tiene que relacionar unidades didacticas y convocatorias
+            
         } catch (CreateException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -170,9 +166,20 @@ public class Main {
     
     private static void checkEnunciado(Controller c){
         // Consultar los enunciados de examen en los que se trata una unidad didáctica concreta.
-
-        // convocatoriasList <ConvocatoriaExamen> () = metodoDelControlador(id enunciado)
-        //pedir  moreno ese metodo, se lo cuentas
+        try {            
+            String acronimo = Util.introducirCadena("Introduzca acrónimo de ud:");
+            // pasar acronimo 'UD1'
+            ArrayList<Enunciado> enunciadoList = c.consultarEnunciado(acronimo);
+            if (enunciadoList.size() > 0) {
+                enunciadoList.forEach((enunciado) -> {
+                    System.out.println(enunciado.toString());
+                });
+            } else {
+            System.out.println("No se encontraron enunciados para el acrónimo: " + acronimo);
+        }
+        } catch (CreateException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private static void checkConvocatoria(Controller c){
