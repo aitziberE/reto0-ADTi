@@ -33,15 +33,15 @@ public class Controller implements IController {
      * Crear una unidad didáctica (Unidad) y convocatoria (Convocatoria) de
      * examen.
      */
-    final String INSERTunidaddidactica = "INSERT INTO UnidadDidactica VALUES (?, ?, ?, ?)";
-    final String INSERTconvocatoria = "INSERT INTO ConvocatoriaExamen VALUES (?, ?, ?, ?, ?)";
+    final String INSERTunidaddidactica = "INSERT INTO UnidadDidactica (acronimo, titulo, evaluacion, descripcion) VALUES (?, ?, ?, ?)";
+    final String INSERTconvocatoria = "INSERT INTO ConvocatoriaExamen (convocatoria, descripcion, fecha, curso, enunciado_id) VALUES (?, ?, ?, ?, ?)";
 
     /**
      * Crear un enunciado de examen agregando las unidades didácticas que va a
      * referir. También se asociará a este enunciado la convocatoria para la que
      * se crea.
      */
-    final String INSERTenunciado = "INSERT INTO Enunciado VALUES (?, ?, ?, ?)";
+    final String INSERTenunciado = "INSERT INTO Enunciado (descripcion, nivel, disponible, ruta) VALUES (?, ?, ?, ?)";
 
     //SELECTS
     /**
@@ -101,7 +101,7 @@ public class Controller implements IController {
         // Abrimos la conexión
         con = conection.openConnection();
         try {
-            stmt = con.prepareStatement(INSERTunidaddidactica);
+            stmt = con.prepareStatement(INSERTconvocatoria);
 
             stmt.setString(1, convocatoria);
             stmt.setString(2, descripcion);
@@ -130,7 +130,7 @@ public class Controller implements IController {
         // Abrimos la conexión
         con = conection.openConnection();
         try {
-            stmt = con.prepareStatement(INSERTunidaddidactica);
+            stmt = con.prepareStatement(INSERTenunciado);
 
             stmt.setString(1, descripcion);
             stmt.setString(2, nivel);

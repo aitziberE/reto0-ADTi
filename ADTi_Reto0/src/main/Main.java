@@ -34,23 +34,26 @@ public class Main {
         do {
             menu = menu();
             switch (menu) {
-                //aplicar createConvocatoriaExamen(c);
+              
                 case 1:
                     createUnidad(c);
                     break;
                 case 2:
-                    createEnunciado(c);
+                    createConvocatoriaExamen(c);
                     break;
                 case 3:
-                    checkEnunciado(c);
+                    createEnunciado(c);
                     break;
                 case 4:
-                    checkConvocatoria(c);
+                    checkEnunciado(c);
                     break;
                 case 5:
-                    viewDocument(c);
+                    checkConvocatoria(c);
                     break;
                 case 6:
+                    viewDocument(c);
+                    break;
+                case 7:
                     asignEnunciado(c);
                     break;
                 case 0:
@@ -62,7 +65,21 @@ public class Main {
             }
         } while (menu != 0);
     }
+    
+    private static int menu() {
+        System.out.println("Seleccione una opción:\n"
+                + "1. Crear unidad didáctica\n"
+                + "2. Crear convocatoria\n"
+                + "3. Crear enunciado agregando unidades didácticas y asociando convocatoria\n"
+                + "4. Consultar los enunciados de examen en los que se trata una unidad didáctica concreta. \n"
+                + "5. Consultar en qué convocatorias se ha utilizado un enunciado concreto. \n"
+                + "6. Visualizar el documento de texto asociado a un enunciado. \n"
+                + "7. Asignar un enunciado a una convocatoria. \n"
+                + "0. Salir.");
+        return Util.leerInt(0, 6);
+    }
 
+        
     private static void createUnidad(Controller c) {
         try {
             System.out.println("Introduzca los siguientes datos de la unidad didáctica a crear:");
@@ -74,9 +91,7 @@ public class Main {
             c.crearUnidadDidactica(acronimo, titulo, evaluacion, descripcion);
         } catch (CreateException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        
+        }         
     }   
 
     private static void createConvocatoriaExamen(Controller c){
@@ -87,7 +102,7 @@ public class Main {
             System.out.println("fecha:");
             LocalDate fecha = Util.leerFechaAMD();
             String curso = Util.introducirCadena("Curso");
-            System.out.println("enunciado:");
+            System.out.println("Enunciado:");
             int enunciado = Util.leerInt();
             
             c.crearConvocatoria(convocatoria, descripcion, fecha, curso, enunciado);
@@ -180,19 +195,4 @@ public class Main {
         //UnidadDidactica unidad = new UnidadDidactica(acronimoUD, tituloUD, evaluacionUD, descripcionUD);
 
     }
-
-
-
-    private static int menu() {
-        System.out.println("Seleccione una opción:\n"
-                + "1. Crear unidad didáctica y convocatoria nuevas. \n"
-                + "2. Crear y asociar enunciado\n"
-                + "3. Consultar los enunciados de examen en los que se trata una unidad didáctica concreta. \n"
-                + "4. Consultar en que convocatorias se ha utilizado un enunciado concreto. \n"
-                + "5. Visualizar el documento de texto asociado a un enunciado. \n"
-                + "6. Asignar un enunciado a una convocatoria. \n"
-                + "0. Salir.");
-        return Util.leerInt(0, 6);
-    }
-
 }
