@@ -1,5 +1,7 @@
 package excepciones;
 
+import java.sql.SQLException;
+
 public class CreateException extends Exception {
 
 	/**
@@ -16,5 +18,9 @@ public class CreateException extends Exception {
 		super(mensaje);
 		
 	}
+
+    public CreateException(String error, SQLException e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }

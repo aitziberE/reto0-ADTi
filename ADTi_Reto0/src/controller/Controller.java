@@ -153,6 +153,12 @@ public class Controller implements IController {
         }
     }
 
+    /**
+     *
+     * @param ud
+     * @return
+     * @throws CreateException
+     */
     @Override
     public ArrayList<Enunciado> consultarEnunciado(String ud) throws CreateException {
         // Tenemos que definir el ResultSet para recoger el resultado de la consulta
