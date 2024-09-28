@@ -34,7 +34,6 @@ CREATE TABLE UnidadDidactica_Enunciado (
     FOREIGN KEY (unidad_didactica_id) REFERENCES UnidadDidactica(id)
 );
 
---insert temporal
 INSERT INTO UnidadDidactica (acronimo, titulo, evaluacion, descripcion) 
     VALUES
         ('UD1', 'Introducción a la Programación', 'Examen Final', 'Conceptos básicos de programación.'),
