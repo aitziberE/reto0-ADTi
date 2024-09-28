@@ -33,7 +33,7 @@ public class ConnectionOpenClose {
 	 * them from a configuration file.
 	 */
 	public ConnectionOpenClose() {
-		configFile = ResourceBundle.getBundle("resources.Config"); // Load the configuration file.
+		configFile = ResourceBundle.getBundle("config.config"); // Load the configuration file.
 		url = configFile.getString("URL"); // Get the URL from the configuration file.
 		user = configFile.getString("USER"); // Get the username from the configuration file.
 		pass = configFile.getString("PASSWORD"); // Get the password from the configuration file.
