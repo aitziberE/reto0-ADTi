@@ -45,10 +45,10 @@ public class Controller implements IController {
 
     //SELECTS
     /**
-     * Consultar los enunciados de una unidad didáctica concreta (nombre)
+     * Consultar los enunciados de una unidad didáctica concreta
      */
-    final String SELECTenunciado = "SELECT e.* FROM Enunciado e JOIN UnidadDidactica_Enunciado ue "
-            + "ON e.id = ue.enunciado_id JOIN UnidadDidactica ud ON ud.id = ue.unidad_didactica_id WHERE ud.acronimo = ?";
+    final String SELECTenunciado = "SELECT e.id, e.descripcion, e.nivel, e.disponible, e.ruta FROM enunciado e JOIN unidaddidactica_enunciado ude ON e.id = ude.enunciado_id JOIN unidaddidactica ud ON ude.unidad_didactica_id = ud.id WHERE ud.acronimo = ?"; 
+    
     /**
      * Devuelve el enunciado mediante la ID
      */
@@ -176,7 +176,7 @@ public class Controller implements IController {
 
             rs = stmt.executeQuery();
 
-            if (rs.next()) {
+            while (rs.next()) {
                 Enunciado enu = new Enunciado();
                 enu.setId(rs.getInt("id"));
                 enu.setDescripcion(rs.getString("descripcion"));
@@ -184,7 +184,7 @@ public class Controller implements IController {
                 enu.setNivel(Dificultad.valueOf(nivelStr));
                 enu.setDisponible(rs.getBoolean("disponible"));
                 enu.setRuta(rs.getString("ruta"));
-                
+
                 enunciadoList.add(enu);
             }
         } catch (SQLException e) {

@@ -167,7 +167,7 @@ public class Main {
     private static void checkEnunciado(Controller c){
         // Consultar los enunciados de examen en los que se trata una unidad didáctica concreta.
         try {            
-            String acronimo = Util.introducirCadena("Introduzca acrónimo de ud:");
+            String acronimo = Util.introducirCadena("Introduzca acrónimo de ud:").trim();
             // pasar acronimo 'UD1'
             ArrayList<Enunciado> enunciadoList = c.consultarEnunciado(acronimo);
             if (enunciadoList.size() > 0) {

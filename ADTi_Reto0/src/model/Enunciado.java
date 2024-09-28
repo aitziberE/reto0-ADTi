@@ -127,7 +127,7 @@ public class Enunciado {
 
     @Override
     public String toString() {
-        return "Enunciado{" + ", descripcion=" + descripcion + ", nivel=" + nivel + ", disponible=" + disponible + ", ruta=" + ruta + ", convocatoriaExamenList=" + convocatoriaExamenList + ", unidadDidacticaList=" + unidadDidacticaList + '}';
+        return "Enunciado{" + " descripcion=" + descripcion + ", nivel=" + nivel + ", disponible=" + disponible + ", ruta=" + ruta + ", convocatoriaExamenList=" + convocatoriaExamenList + ", unidadDidacticaList=" + unidadDidacticaList + '}';
     }
     
 }

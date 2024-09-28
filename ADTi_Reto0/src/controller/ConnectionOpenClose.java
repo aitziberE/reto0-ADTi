@@ -37,7 +37,7 @@ public class ConnectionOpenClose {
 		url = configFile.getString("URL"); // Get the URL from the configuration file.
 		user = configFile.getString("USER"); // Get the username from the configuration file.
 		pass = configFile.getString("PASSWORD"); // Get the password from the configuration file.
-	}
+	}     
 
 	/**
 	 * Opens a connection to the database using the database connection parameters.
