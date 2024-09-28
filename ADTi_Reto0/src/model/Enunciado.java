@@ -26,6 +26,7 @@ public class Enunciado {
         this.unidadDidacticaList=new ArrayList<>();
     }
     
+    
     public Enunciado(String descripcion, Dificultad nivel,boolean disponible, String ruta, ArrayList<ConvocatoriaExamen> convocatoriaExamenList, ArrayList<UnidadDidactica> unidadDidacticaList){
         this.descripcion=descripcion;
         this.nivel=nivel;
@@ -40,6 +41,8 @@ public class Enunciado {
         this.nivel = nivel;
         this.disponible = disponible;
         this.ruta = ruta;
+        this.convocatoriaExamenList=new ArrayList<>();
+        this.unidadDidacticaList=new ArrayList<>();
     }
     
     public int getId() {

@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 import model.ConvocatoriaExamen;
 import model.Dificultad;
 import model.Enunciado;
+import model.UnidadDidactica;
 
 /**
  *
@@ -51,10 +52,14 @@ public class Controller implements IController {
      */
     final String SELECTenunciado = "SELECT e.id, e.descripcion, e.nivel, e.disponible, e.ruta FROM enunciado e JOIN unidaddidactica_enunciado ude ON e.id = ude.enunciado_id JOIN unidaddidactica ud ON ude.unidad_didactica_id = ud.id WHERE ud.acronimo = ?"; 
     
+    final String SELECTAllEnunciados = "SELECT * FROM enunciado";
+    final String SELECTAllUnidadesDidacticas = "SELECT * FROM unidaddidactica";
+    final String SELECTAllConvocatoriasExamen   = "SELECT * FROM convocatoriaexamen";
     /**
      * Devuelve el enunciado mediante la ID
      */
     final String SELECTIdEnunciado = "SELECT * FROM Enunciado WHERE id = ?";
+    final String SELECTEnunciadoByDescription = "SELECT * FROM Enunciado WHERE descripcion = ?";
     /**
      * Consultar en que convocatorias se ha utilizado un enunciado concreto.
      */
@@ -69,7 +74,9 @@ public class Controller implements IController {
      * Asignar un enunciado a una convocatoria
      */
     final String UPDATEconvocatoria = "UPDATE ConvocatoriaExamen SET enunciado_id = ? WHERE convocatoria = ?";
-
+    final String UPDATEud_e = "INSERT INTO UnidadDidactica_Enunciado (enunciado_id, unidad_didactica_id) VALUES (?, ?)";
+    final String UPDATEconvocatoriaExamen = "UPDATE ConvocatoriaExamen SET enunciado_id = ? WHERE convocatoria = ?";
+    
     @Override
     public void crearUnidadDidactica(String acronimo, String titulo, String evaluacion, String descripcion) throws CreateException {
         // Abrimos la conexión
@@ -263,7 +270,53 @@ public class Controller implements IController {
         }
         return convocatoriaExamenList;
     }
+    
+    @Override
+    public ArrayList<Enunciado> getAllEnunciados() throws CreateException { 
+        // Tenemos que definir el ResultSet para recoger el resultado de la consulta
+        ResultSet rs = null;
+        ArrayList<Enunciado> enunciadosList = new ArrayList<>();
 
+        // Abro la conexióm
+        con = conection.openConnection();
+
+        try {
+            stmt = con.prepareStatement(SELECTAllEnunciados);
+            rs = stmt.executeQuery();
+
+            // Iteramos sobre el ResultSet
+            while (rs.next()) {
+                Enunciado enunciado = new Enunciado();
+                
+                //recoger el resto de atributos de Enunciado
+                enunciado.setId(rs.getInt("id"));
+                enunciado.setDescripcion(rs.getString("descripcion"));
+
+                enunciadosList.add(enunciado);
+            }
+        } catch (SQLException e) {
+
+            System.out.println("Error al ejecutar la query");
+            String error = "Error al consultar el enunciado";
+            CreateException ex = new CreateException(error);
+            throw ex;
+        } finally {
+            // Cerramos ResultSet
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    System.out.println("Error en cierre del ResultSet");
+                    String error = "Error al consultar el enunciado";
+                    CreateException e1 = new CreateException(error);
+                    throw e1;
+                }
+            }
+            conection.closeConnection(stmt, con);
+        }
+        return enunciadosList;
+    }
+    
     @Override
     public Enunciado consultarEnunciadoPorId(int enunciadoId) throws CreateException {
         Enunciado enunciado = null;
@@ -381,8 +434,192 @@ public class Controller implements IController {
             conection.closeConnection(stmt, con);
         }
         return cambios;
+    }  
+
+    @Override
+    public boolean associateUDToEnunciado(UnidadDidactica unidadDidactica, Enunciado enunciado) throws CreateException {
+        boolean cambios = false;
+        // Abrimos la conexión
+        con = conection.openConnection();
+        try {
+            stmt = con.prepareStatement(UPDATEud_e);
+
+            stmt.setInt(1, enunciado.getId());
+            stmt.setInt(2, unidadDidactica.getId());
+
+            if (stmt.executeUpdate() == 1) {
+                cambios = true;
+            }
+        } catch (SQLException e1) {
+            String error = "Error al asociar unidad didactica";
+            CreateException ex = new CreateException(error);
+            throw ex;
+        } finally {
+            conection.closeConnection(stmt, con);
+        }
+        return cambios;       
     }
 
-   
+    @Override
+    public boolean associateEnunciadoToConvocatoriaExamen(Enunciado enunciado, ConvocatoriaExamen convocatoriaExamen) throws CreateException {
+        boolean cambios = false;
+        // Abrimos la conexión
+        con = conection.openConnection();
+        try {
+            stmt = con.prepareStatement(UPDATEconvocatoriaExamen);
+
+            stmt.setInt(1, enunciado.getId());
+            stmt.setString(2, convocatoriaExamen.getConvocatoria());
+
+            if (stmt.executeUpdate() == 1) {
+                cambios = true;
+            }
+        } catch (SQLException e1) {
+            String error = "Error al asociar convocatoria";
+            CreateException ex = new CreateException(error);
+            throw ex;
+        } finally {
+            conection.closeConnection(stmt, con);
+        }
+        return cambios; 
+    }
+
+    @Override
+    public ArrayList<UnidadDidactica> getAllUnidadesDidacticas() throws CreateException {
+        // Tenemos que definir el ResultSet para recoger el resultado de la consulta
+        ResultSet rs = null;
+        ArrayList<UnidadDidactica> unidadesDidacticasList = new ArrayList<>();
+
+        // Abro la conexióm
+        con = conection.openConnection();
+
+        try {
+            stmt = con.prepareStatement(SELECTAllUnidadesDidacticas);
+            rs = stmt.executeQuery();
+
+            // Iteramos sobre el ResultSet
+            while (rs.next()) {
+                UnidadDidactica ud = new UnidadDidactica();
+                
+                //recoger el enunciados
+                
+                ud.setId(rs.getInt("id"));
+                ud.setAcronimo(rs.getString("acronimo"));
+                ud.setTitulo(rs.getString("titulo"));
+                ud.setEvaluacion(rs.getString("evaluacion"));
+                ud.setDescripcion(rs.getString("descripcion"));
+               
+
+                unidadesDidacticasList.add(ud);
+            }
+        } catch (SQLException e) {
+
+            System.out.println("Error al ejecutar la query");
+            String error = "Error al consultar el enunciado";
+            CreateException ex = new CreateException(error);
+            throw ex;
+        } finally {
+            // Cerramos ResultSet
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    System.out.println("Error en cierre del ResultSet");
+                    String error = "Error al consultar unidades didacticas";
+                    CreateException e1 = new CreateException(error);
+                    throw e1;
+                }
+            }
+            conection.closeConnection(stmt, con);
+        }
+        return unidadesDidacticasList;
+    }
+
+    @Override
+    public ArrayList<ConvocatoriaExamen> getAllConvocatoriasExamen() throws CreateException {
+         // Tenemos que definir el ResultSet para recoger el resultado de la consulta
+        ResultSet rs = null;
+        ArrayList<ConvocatoriaExamen> convocatoriasExamenList = new ArrayList<>();
+
+        // Abro la conexióm
+        con = conection.openConnection();
+
+        try {
+            stmt = con.prepareStatement(SELECTAllConvocatoriasExamen);
+            rs = stmt.executeQuery();
+
+            // Iteramos sobre el ResultSet
+            while (rs.next()) {
+                ConvocatoriaExamen ce = new ConvocatoriaExamen();
+                
+                //recoger el resto de atributos
+                ce.setConvocatoria(rs.getString("convocatoria"));
+                
+                convocatoriasExamenList.add(ce);
+            }
+        } catch (SQLException e) {
+
+            System.out.println("Error al ejecutar la query");
+            String error = "Error al consultar el enunciado";
+            CreateException ex = new CreateException(error);
+            throw ex;
+        } finally {
+            // Cerramos ResultSet
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                    System.out.println("Error en cierre del ResultSet");
+                    String error = "Error al consultar convocatorias examen";
+                    CreateException e1 = new CreateException(error);
+                    throw e1;
+                }
+            }
+            conection.closeConnection(stmt, con);
+        }
+        return convocatoriasExamenList;
+    }
+
+    @Override
+    public Enunciado getEnunciadoByDescription(String description) throws CreateException {
+        Enunciado enunciado = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        // Abro la conexión
+        con = conection.openConnection();
+
+        try {
+            stmt = con.prepareStatement(SELECTEnunciadoByDescription);
+            stmt.setString(1, description);
+            rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                enunciado = new Enunciado();
+                
+                //recoger el resto de atributos
+                enunciado.setId(rs.getInt("id"));
+            
+            }
+        } catch (SQLException e) {
+            throw new CreateException("Error al consultar el enunciado con descripcion: " + description, e);
+        } finally {
+            // Cierro ResultSet y PreparedStatement
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {
+                throw new CreateException("Error al cerrar los recursos", e);
+            }
+            // Cierro la conexión
+            conection.closeConnection(stmt, con);
+        }
+        return enunciado;  
+        
+    }
 
 }

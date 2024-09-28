@@ -146,7 +146,11 @@ public class Main {
     private static void createEnunciado(Controller c){
         try {
             Dificultad nivel = Dificultad.BAJA;
-            
+            ArrayList<ConvocatoriaExamen> convocatoriaExamenList = new ArrayList<>();
+            ArrayList<UnidadDidactica> unidadDidacticaList = new ArrayList<>();
+            boolean associateUDToEnunciadoSuccess = false;
+            boolean associateEnunciadoToConvocatoriaExamenSuccess =  false;
+
             System.out.println("Introduzca los siguientes datos del enunciado:");
             String descripcion = Util.introducirCadena("Descripcion:");
             
@@ -158,8 +162,49 @@ public class Main {
             String ruta = Util.introducirCadena("Ruta:");
             
             c.crearEnunciado(descripcion, nivelString, disponible, ruta);
-           
+            
+            Enunciado enunciado = c.getEnunciadoByDescription(descripcion);
+            
             //tiene que relacionar unidades didacticas y convocatorias
+            
+            //vusualizar unidades didacticas
+            unidadDidacticaList = c.getAllUnidadesDidacticas();
+            
+            if (unidadDidacticaList.size() > 0) {
+                System.out.println("Seleccione num referente a la unidad didactica que desea asociar:");
+                for (int i =0; unidadDidacticaList.size()>i; i++){
+                    System.out.println(i+1 +". "+unidadDidacticaList.get(i).getAcronimo());
+                }
+                int userSelection = Util.leerInt();
+                UnidadDidactica ud = unidadDidacticaList.get(userSelection-1);
+                
+                associateUDToEnunciadoSuccess = c.associateUDToEnunciado(ud, enunciado);
+            
+            } else {
+            System.out.println("No se encontraron unidades didacticas");
+            }
+            //visualizar convocatorias
+            convocatoriaExamenList = c.getAllConvocatoriasExamen();
+            
+            if (convocatoriaExamenList.size() > 0) {
+                System.out.println("Seleccione num referente a la unidad didactica que desea asociar:");
+                for (int j =0; convocatoriaExamenList.size()>j; j++){
+                    System.out.println(j+1 +". "+convocatoriaExamenList.get(j).getConvocatoria());
+                }
+                int userSelection = Util.leerInt();
+                ConvocatoriaExamen ce = convocatoriaExamenList.get(userSelection-1);
+                
+                associateEnunciadoToConvocatoriaExamenSuccess = c.associateEnunciadoToConvocatoriaExamen(enunciado, ce);
+            
+            } else {
+            System.out.println("No se encontraron convocatorias");
+            }
+            
+            if(associateUDToEnunciadoSuccess && associateEnunciadoToConvocatoriaExamenSuccess){
+                System.out.println("operación realizada");
+            }else{
+                System.out.println("hubo algun error");
+            }
             
         } catch (CreateException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
@@ -190,8 +235,14 @@ public class Main {
     
     private static void viewDocument(Controller c) throws CreateException{
         try {
+            ArrayList<Enunciado> enunciadosList = c.getAllEnunciados();
             System.out.println("Introduce el numero que corresponda al enunciado que quieres visualizar:");
-            int enunciadoId = Util.leerInt();
+            
+            for(int i=0;enunciadosList.size()>i;i++){
+                System.out.println(i+1 +". "+enunciadosList.get(i).getDescripcion());
+            }
+            int userSelection = Util.leerInt();
+            int enunciadoId = enunciadosList.get(userSelection-1).getId();
             Enunciado enunciado = c.consultarEnunciadoPorId(enunciadoId);
          
             File archivo = new File(enunciado.getRuta());
