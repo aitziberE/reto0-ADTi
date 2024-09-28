@@ -1,6 +1,7 @@
 package controller;
 
 import excepciones.CreateException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import model.Enunciado;
@@ -16,7 +17,9 @@ public interface IController {
     public ArrayList<Enunciado> consultarEnunciado(String ud)  throws CreateException;
 
     public ArrayList consultarConvocatoriaPorEnunciado(int enunciadoId)  throws CreateException;
-
+    
+    public Enunciado consultarEnunciadoPorId(int enunciadoId) throws CreateException;
+            
     public String consultarDescripcionEnunciado(int enunciadoId)  throws CreateException;
 
     public boolean asignarEnunciadoAConvocatoria(int enunciadoId, String convocatoria)  throws CreateException;

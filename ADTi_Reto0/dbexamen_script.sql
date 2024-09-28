@@ -45,11 +45,11 @@ INSERT INTO UnidadDidactica (acronimo, titulo, evaluacion, descripcion)
 
 INSERT INTO Enunciado (descripcion, nivel, disponible, ruta) 
     VALUES
-        ('Describe el funcionamiento de un bucle for en Python.', 'MEDIA', TRUE, '/ruta/enunciado1.pdf'),
-        ('Explica los diferentes tipos de joins en SQL.', 'ALTA', TRUE, '/ruta/enunciado2.pdf'),
-        ('Dibuja un diagrama de una red local.', 'BAJA', FALSE, '/ruta/enunciado3.pdf'),
-        ('Explica la diferencia entre RAM y ROM.', 'BAJA', TRUE, '/ruta/enunciado4.pdf'),
-        ('Describe el algoritmo de búsqueda binaria.', 'MEDIA', TRUE, '/ruta/enunciado5.pdf');
+        ('Describe el funcionamiento de un bucle for en Python.', 'MEDIA', TRUE, 'src/resources/enunciado1.txt'),
+        ('Explica los diferentes tipos de joins en SQL.', 'ALTA', TRUE, 'src/ruta/enunciado2.txt'),
+        ('Dibuja un diagrama de una red local.', 'BAJA', FALSE, 'src/ruta/enunciado3.txt'),
+        ('Explica la diferencia entre RAM y ROM.', 'BAJA', TRUE, 'src/ruta/enunciado4.txt'),
+        ('Describe el algoritmo de búsqueda binaria.', 'MEDIA', TRUE, 'src/ruta/enunciado5.txt');
 
 INSERT INTO ConvocatoriaExamen (convocatoria, descripcion, fecha, curso, enunciado_id) 
     VALUES

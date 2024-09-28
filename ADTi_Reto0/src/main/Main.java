@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.time.LocalDate;
 import controller.Controller;
 import excepciones.CreateException;
+import java.io.File;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,7 +28,7 @@ public class Main {
      *
      * @param args
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws CreateException {
         
         Controller c = new Controller();
         
@@ -184,14 +186,35 @@ public class Main {
     
     private static void checkConvocatoria(Controller c){
         // Consultar en que convocatorias se ha utilizado un enunciado concreto.
+        
+        
+        
     }
     
-    private static void viewDocument(Controller c){
+    private static void viewDocument(Controller c) throws CreateException{
         // Visualizar el documento de texto asociado a un enunciado.
         //aplicar lógica de las rutas.
         // dentro de resources meter algunos .txt con info del enunciado 
         //que el usuario de el id y moreno nos devuelva la ruta que tiene ese enunciado
         // desde aqui se abre esa ruta que corresponde a un archivo de resources
+        try {
+            System.out.println("Introduce el numero que corresponda al enunciado que quieres visualizar:");
+            int enunciadoId = Util.leerInt();
+            Enunciado enunciado = c.consultarEnunciadoPorId(enunciadoId);
+         
+            File archivo = new File(enunciado.getRuta());
+            // Usar Runtime para ejecutar el Bloc de notas
+            if (archivo.exists()) {
+                String command = "notepad.exe " + archivo.getAbsolutePath();
+                Runtime.getRuntime().exec(command);
+            } else {
+                System.out.println("El archivo no existe en la ruta especificada: " + enunciado.getRuta());
+            }
+        } catch (IOException e) {
+            System.out.println("Error al intentar abrir el archivo: " + e.getMessage());
+        }
+         
+        
     }
     
     private static void asignEnunciado(Controller c){

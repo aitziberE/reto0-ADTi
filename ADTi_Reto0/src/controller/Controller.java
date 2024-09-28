@@ -13,6 +13,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.ConvocatoriaExamen;
 import model.Dificultad;
 import model.Enunciado;
@@ -262,10 +264,14 @@ public class Controller implements IController {
         return convocatoriaExamenList;
     }
 
-    private Enunciado consultarEnunciadoPorId(int enunciadoId) throws SQLException {
+    @Override
+    public Enunciado consultarEnunciadoPorId(int enunciadoId) throws CreateException {
         Enunciado enunciado = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
+
+        // Abro la conexión
+        con = conection.openConnection();
 
         try {
             stmt = con.prepareStatement(SELECTIdEnunciado);
@@ -277,21 +283,37 @@ public class Controller implements IController {
                 enunciado.setId(enunciadoId);
                 enunciado.setDescripcion(rs.getString("descripcion"));
                 String nivelStr = rs.getString("nivel");
-                enunciado.setNivel(Dificultad.valueOf(nivelStr));
+
+                // Manejo de posibles excepciones por nivel no válido
+                try {
+                    enunciado.setNivel(Dificultad.valueOf(nivelStr));
+                } catch (IllegalArgumentException e) {
+                    throw new CreateException("Dificultad no válida: " + nivelStr, e);
+                }
+
                 enunciado.setDisponible(rs.getBoolean("disponible"));
                 enunciado.setRuta(rs.getString("ruta"));
             }
+        } catch (SQLException e) {
+            throw new CreateException("Error al consultar el enunciado con ID: " + enunciadoId, e);
         } finally {
-            if (rs != null) {
-                rs.close();
+            // Cierro ResultSet y PreparedStatement
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {
+                throw new CreateException("Error al cerrar los recursos", e);
             }
-            if (stmt != null) {
-                stmt.close();
-            }
+            // Cierro la conexión
+            conection.closeConnection(stmt, con);
         }
-        return enunciado;
+        return enunciado;   
     }
-
+    
     @Override
     public String consultarDescripcionEnunciado(int enunciadoId) throws CreateException {
         // Tenemos que definir el ResultSet para recoger el resultado de la consulta
@@ -360,5 +382,7 @@ public class Controller implements IController {
         }
         return cambios;
     }
+
+   
 
 }
