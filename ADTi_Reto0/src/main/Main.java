@@ -186,17 +186,9 @@ public class Main {
     
     private static void checkConvocatoria(Controller c){
         // Consultar en que convocatorias se ha utilizado un enunciado concreto.
-        
-        
-        
     }
     
     private static void viewDocument(Controller c) throws CreateException{
-        // Visualizar el documento de texto asociado a un enunciado.
-        //aplicar lógica de las rutas.
-        // dentro de resources meter algunos .txt con info del enunciado 
-        //que el usuario de el id y moreno nos devuelva la ruta que tiene ese enunciado
-        // desde aqui se abre esa ruta que corresponde a un archivo de resources
         try {
             System.out.println("Introduce el numero que corresponda al enunciado que quieres visualizar:");
             int enunciadoId = Util.leerInt();
@@ -212,9 +204,7 @@ public class Main {
             }
         } catch (IOException e) {
             System.out.println("Error al intentar abrir el archivo: " + e.getMessage());
-        }
-         
-        
+        } 
     }
     
     private static void asignEnunciado(Controller c){
@@ -223,6 +213,5 @@ public class Main {
         // boolean añadidoConExito = metodMOreno(id conv, id enunc)
 
         //UnidadDidactica unidad = new UnidadDidactica(acronimoUD, tituloUD, evaluacionUD, descripcionUD);
-
     }
 }
