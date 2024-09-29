@@ -18,7 +18,8 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Aitziber, Iñigo
+ * @author Aitziber, Iñigo, Ander
+ * @version 1.1
  */
 public class Main {
 
@@ -98,14 +99,41 @@ public class Main {
     private static void createConvocatoriaExamen(Controller c) {
         try {
             System.out.println("Introduzca los siguientes datos de la convocatoria de exámen:");
-            String convocatoria = Util.introducirCadena("convocatoria");
-            String descripcion = Util.introducirCadena("descripcion");
-            System.out.println("fecha:");
+            String convocatoria = Util.introducirCadena("Nombre: ");
+            String descripcion = Util.introducirCadena("Descripcion: ");
+            System.out.println("Fecha (aaaa/MM/dd): ");
             LocalDate fecha = Util.leerFechaAMD();
-            String curso = Util.introducirCadena("Curso");
-            System.out.println("Enunciado:");
-            int enunciado = Util.leerInt();
+            String curso = Util.introducirCadena("Curso: ");
+            System.out.println("Enunciado: ");
+            int enunciado = 0;
+            // Sacar los enunciados existentes
+            ArrayList<Enunciado> enunciados;
+            
+            enunciados = c.getAllEnunciados();
 
+            if (enunciados.size() > 0) {
+                int cantidadEnus = 0;
+                System.out.println("Seleccione num referente al enunciado que desea asociar:");
+                for (int i = 0; enunciados.size() > i; i++) {
+                    System.out.println(enunciados.get(i).getId() + ". " + enunciados.get(i).getDescripcion());
+                    cantidadEnus = i + 1;
+                }
+                int userSelection;
+                boolean error;
+                do {
+                    userSelection = Util.leerInt();
+                    if (userSelection <= cantidadEnus && userSelection > 0) {
+                        error = false;
+                        enunciado = userSelection;
+                    } else {
+                        System.out.println("No existe ese enunciado, elige una de los " + cantidadEnus);
+                        error = true;
+                    }
+                } while (error);
+            } else {
+                System.out.println("No se encontraron enunciados");
+            }
+            
             c.crearConvocatoria(convocatoria, descripcion, fecha, curso, enunciado);
 
             // lo que habia hecho el iñigo
@@ -145,8 +173,8 @@ public class Main {
     private static void createEnunciado(Controller c) {
         try {
             Dificultad nivel = Dificultad.BAJA;
-            ArrayList<ConvocatoriaExamen> convocatoriaExamenList = new ArrayList<>();
-            ArrayList<UnidadDidactica> unidadDidacticaList = new ArrayList<>();
+            ArrayList<ConvocatoriaExamen> convocatoriaExamenList;
+            ArrayList<UnidadDidactica> unidadDidacticaList;
             boolean associateUDToEnunciadoSuccess = false;
             boolean associateEnunciadoToConvocatoriaExamenSuccess = false;
 
@@ -165,8 +193,6 @@ public class Main {
 
             Enunciado enunciado = c.getEnunciadoByDescription(descripcion);
 
-            //tiene que relacionar unidades didacticas y convocatorias
-            //vusualizar unidades didacticas
             unidadDidacticaList = c.getAllUnidadesDidacticas();
 
             if (unidadDidacticaList.size() > 0) {

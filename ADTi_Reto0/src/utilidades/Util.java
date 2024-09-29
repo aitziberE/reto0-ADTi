@@ -33,7 +33,7 @@ public class Util {
 			try {
 				date = LocalDate.parse(dateString, formateador);
 			} catch (DateTimeParseException e) {
-				System.out.println("Error, introduce una fecha en formato dd/mm/aaaa ");
+				System.out.println("Error, introduce una fecha en formato dd/MM/aaaa ");
 				error = true;
 			}
 		} while (error);
@@ -51,7 +51,7 @@ public class Util {
 			try {
 				date = LocalDate.parse(dateString, formateador);
 			} catch (DateTimeParseException e) {
-				System.out.println("Error, uuuu/hh/ee ");
+				System.out.println("Error, aaaa/MM/dd ");
 				error = true;
 			}
 		} while (error);
@@ -66,13 +66,13 @@ public class Util {
 			error = false;
 			cadena = introducirCadena();
 			if (cadena.length() != 1) {
-				System.out.println("Error, introduce un �nico caracter: ");
+				System.out.println("Error, introduce un único caracter: ");
 				error = true;
 			} else {
 				letra = cadena.charAt(0);
 				letra = Character.toUpperCase(letra);
 				if (letra != opt1 && letra != opt2) {
-					System.out.println("Error, la opci�n introducida no es correcta, introduce " + opt1 + " o " + opt2);
+					System.out.println("Error, la opción introducida no es correcta, introduce " + opt1 + " o " + opt2);
 					error = true;
 				}
 			}
@@ -89,7 +89,7 @@ public class Util {
 			error = false;
 			cadena = introducirCadena();
 			if (cadena.length() != 1) {
-				System.out.println("Error, introduce un �nico caracter: ");
+				System.out.println("Error, introduce un único caracter: ");
 				error = true;
 			}
 		} while (error);
@@ -105,7 +105,7 @@ public class Util {
 			try {
 				num = Float.parseFloat(introducirCadena());
 			} catch (NumberFormatException e) {
-				System.out.println("Valor no num�rico. Introduce de nuevo:");
+				System.out.println("Valor no numérico. Introduce de nuevo:");
 				error = true;
 			}
 		} while (error);
@@ -122,12 +122,12 @@ public class Util {
 				num = Float.parseFloat(introducirCadena());
 
 			} catch (NumberFormatException e) {
-				System.out.println("Valor no num�rico. Introduce de nuevo:");
+				System.out.println("Valor no numérico. Introduce de nuevo:");
 				error = true;
 				num = min;
 			}
 			if (num < min || num > max) {
-				System.out.println("N� fuera de rango, introduce n� entre " + min + " y " + max + ": ");
+				System.out.println("Nº fuera de rango, introduce nº entre " + min + " y " + max + ": ");
 				error = true;
 			}
 		} while (error);
@@ -143,12 +143,12 @@ public class Util {
 				num = Float.parseFloat(introducirCadena());
 
 			} catch (NumberFormatException e) {
-				System.out.println("Valor no num�rico. Introduce de nuevo:");
+				System.out.println("Valor no numérico. Introduce de nuevo:");
 				error = true;
 				num = min;
 			}
 			if (num < min || num > max) {
-				System.out.println("N� fuera de rango, introduce n� entre " + min + " y " + max + ": ");
+				System.out.println("Nº fuera de rango, introduce nº entre " + min + " y " + max + ": ");
 				error = true;
 			}
 		} while (error);
@@ -165,12 +165,12 @@ public class Util {
 				num = Integer.parseInt(introducirCadena());
 
 			} catch (NumberFormatException e) {
-				System.out.println("Valor no num�rico. Introduce de nuevo:");
+				System.out.println("Valor no numérico. Introduce de nuevo:");
 				error = true;
 				num = min;
 			}
 			if (num < min || num > max) {
-				System.out.println("N� fuera de rango, introduce n� entre " + min + " y " + max + ": ");
+				System.out.println("Nº fuera de rango, introduce nº entre " + min + " y " + max + ": ");
 				error = true;
 			}
 		} while (error);
@@ -186,12 +186,12 @@ public class Util {
 				num = Integer.parseInt(introducirCadena());
 
 			} catch (NumberFormatException e) {
-				System.out.println("Valor no num�rico. Introduce de nuevo:");
+				System.out.println("Valor no numérico. Introduce de nuevo:");
 				error = true;
 				num = min;
 			}
 			if (num < min || num > max) {
-				System.out.println("N� fuera de rango, introduce n� entre " + min + " y " + max + ": ");
+				System.out.println("Nº fuera de rango, introduce nº entre " + min + " y " + max + ": ");
 				error = true;
 			}
 		} while (error);
@@ -206,7 +206,7 @@ public class Util {
 			try {
 				num = Integer.parseInt(introducirCadena());
 			} catch (NumberFormatException e) {
-				System.out.println("Valor no num�rico. Introduce de nuevo:");
+				System.out.println("Valor no numérico. Introduce de nuevo:");
 				error = true;
 			}
 		} while (error);
