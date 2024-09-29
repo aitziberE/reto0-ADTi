@@ -9,7 +9,8 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Ander, Aitziber
+ * @author Ander
+ * @author Aitziber
  */
 public class UnidadDidactica {
     private int id;
@@ -23,7 +24,6 @@ public class UnidadDidactica {
         this.enunciadoList=new ArrayList<>();
     }
     public UnidadDidactica(String acronimoInput, String tituloInput, String evaluacionInput, String descripcionInput, ArrayList<Enunciado> enunciadoList){
-        //TODO Meter un ID autoincremental que lo asigne en base a las UD que haya ya creadas.
         this.acronimo = acronimoInput;
         this.titulo= tituloInput;
         this.evaluacion = evaluacionInput;

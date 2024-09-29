@@ -8,7 +8,8 @@ import utilidades.Util;
 
 /**
  *
- * @author Ander, Aitziber
+ * @author Ander
+ * @author Aitziber
  */
 public enum Dificultad {
     ALTA, MEDIA, BAJA;

@@ -18,8 +18,8 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Aitziber, Iñigo, Ander
- * @version 1.1
+ * @author Ander
+ * @author Aitziber
  */
 public class Main {
 
@@ -106,7 +106,7 @@ public class Main {
             String curso = Util.introducirCadena("Curso: ");
             System.out.println("Enunciado: ");
             int enunciado = 0;
-            // Sacar los enunciados existentes
+
             ArrayList<Enunciado> enunciados;
 
             enunciados = c.getAllEnunciados();
@@ -153,7 +153,6 @@ public class Main {
             String nivelString = nivel.name();
 
             System.out.println("¿Está disponible el enunciado? (si/no):");
-            // si no es boolean entra en bucle sin decir nada
             boolean disponible = Util.isBoolean();
             String ruta = Util.introducirCadena("Ruta:");
 
@@ -273,7 +272,6 @@ public class Main {
 
     private static void checkConvocatoria(Controller c) throws CreateException {
         // Consultar en que convocatorias se ha utilizado un enunciado concreto.
-        // Sacar los enunciados existentes
         ArrayList<ConvocatoriaExamen> convocatorias;
         ArrayList<Enunciado> enunciados;
         int enunciado = 0;

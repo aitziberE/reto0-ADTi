@@ -20,6 +20,12 @@ import java.util.logging.Logger;
  * connecting to or closing the connection to the database.
  */
 
+/**
+ *
+ * @author Ander
+ * @author Aitziber
+ */
+
 public class ConnectionOpenClose {
 	private ResourceBundle configFile; // Resource bundle for storing the database configuration parameters.
 	private String url; // The URL for the database.
@@ -48,8 +54,7 @@ public class ConnectionOpenClose {
 	public Connection openConnection() throws CreateException {
 		Connection con = null; // Initialize the connection to null.
 		try {
-			con = DriverManager.getConnection(url, user, pass); // Establish the database connection using the
-// parameters from the configuration file.
+			con = DriverManager.getConnection(url, user, pass); // Establish the database connection using the parameters from the configuration file. 
 		} catch (SQLException e) {
                     String error = "Error connecting to the database: " + e.getMessage();
                     logger.log(Level.SEVERE, error, e);

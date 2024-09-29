@@ -101,33 +101,6 @@ public class Enunciado {
         this.unidadDidacticaList = unidadDidacticaList;
     }
 
-       /*
-    public void setDificultad(String dificultad) {
-        boolean validez = false;
-        do {
-            System.out.println("Dificultad (BAJA, MEDIA, ALTA): ");
-            dificultad = Util.introducirCadena().toUpperCase();
-            if (dificultad.equals("BAJA") || dificultad.equals("MEDIA") || dificultad.equals("ALTA")) {
-                validez = true;
-                switch (dificultad) {
-                    case "BAJA":
-                        this.nivel = Dificultad.valueOf("BAJA");
-                        break;
-                    case "MEDIA":
-                        this.nivel = Dificultad.valueOf("MEDIA");
-                        break;
-                    case "ALTA":
-                        this.nivel = Dificultad.valueOf("ALTA");
-                        break;
-                }
-            } else {
-                System.out.println("ERROR. Elige una dificultad disponible");
-            }
-
-        } while (!validez);
-    }
-    */
-
     @Override
     public String toString() {
         return "Enunciado{" + " descripcion=" + descripcion + ", nivel=" + nivel + ", disponible=" + disponible + ", ruta=" + ruta + ", convocatoriaExamenList=" + convocatoriaExamenList + ", unidadDidacticaList=" + unidadDidacticaList + '}';

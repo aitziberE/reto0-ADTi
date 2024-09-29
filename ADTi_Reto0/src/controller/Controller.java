@@ -13,18 +13,16 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.ConvocatoriaExamen;
 import model.Dificultad;
 import model.Enunciado;
 import model.UnidadDidactica;
 
 /**
- *
- * @author Ander
- * @version 1.0
- */
+*
+* @author Ander
+* @author Aitziber
+*/
 public class Controller implements IController {
 
     private Connection con;

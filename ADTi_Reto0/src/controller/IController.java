@@ -7,6 +7,11 @@ import model.ConvocatoriaExamen;
 import model.Enunciado;
 import model.UnidadDidactica;
 
+/**
+*
+* @author Ander
+* @author Aitziber
+*/
 public interface IController {
 
     public void crearUnidadDidactica(String acronimo, String titulo, String evaluacion, String descripcion) throws CreateException;
