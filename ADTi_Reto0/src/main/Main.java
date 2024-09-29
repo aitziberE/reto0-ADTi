@@ -79,7 +79,7 @@ public class Main {
                 + "6. Visualizar el documento de texto asociado a un enunciado. \n"
                 + "7. Asignar un enunciado a una convocatoria. \n"
                 + "0. Salir.");
-        return Util.leerInt(0, 6);
+        return Util.leerInt(0, 7);
     }
 
     private static void createUnidad(Controller c) {
@@ -261,19 +261,44 @@ public class Main {
     private static void checkEnunciado(Controller c) {
         // Consultar los enunciados de examen en los que se trata una unidad didáctica concreta.
         try {
-            String acronimo = Util.introducirCadena("Introduzca acrónimo de ud:").trim();
-            // pasar acronimo 'UD1'
-            ArrayList<Enunciado> enunciadoList = c.consultarEnunciado(acronimo);
-            if (enunciadoList.size() > 0) {
-                enunciadoList.forEach((enunciado) -> {
-                    System.out.println(enunciado.toString());
-                });
+            ArrayList<UnidadDidactica> unidadDidacticaList = c.getAllUnidadesDidacticas();
+                          
+            if (unidadDidacticaList.size() > 0) {
+                int cantidadUds = 0;
+                System.out.println("Seleccione num referente a la unidad didactica que desea consultar:");
+                for (int i = 0; unidadDidacticaList.size() > i; i++) {
+                    System.out.println(i + 1 + ". " + unidadDidacticaList.get(i).getAcronimo());
+                    cantidadUds = i + 1;
+                }
+                int userSelection = 0;
+                boolean error;
+                do {
+                    userSelection = Util.leerInt();
+                    if (userSelection <= cantidadUds && userSelection > 0) {
+                        error = false;
+                    } else {
+                        System.out.println("No existe esa UD, elige una de las " + cantidadUds);
+                        error = true;
+                    }
+                } while (error);
+                UnidadDidactica ud = unidadDidacticaList.get(userSelection - 1);
+                
+                ArrayList<Enunciado> enunciadoList = c.consultarEnunciado(ud.getAcronimo());
+                 
+                if (enunciadoList.size() > 0) {
+                    System.out.println("La unidad didáctica '" + ud.getAcronimo() + "' se trata en los siguientes enunciados:");
+                    enunciadoList.forEach((enunciado) -> {
+                        System.out.println("\t" + "- "+ enunciado.getDescripcion());
+                     });
+                } else {
+                    System.out.println("No se encontraron enunciados");
+                }
             } else {
-                System.out.println("No se encontraron enunciados para el acrónimo: " + acronimo);
+                System.out.println("No se encontraron unidades didacticas");
             }
         } catch (CreateException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }    
     }
 
     private static void checkConvocatoria(Controller c) throws CreateException {
