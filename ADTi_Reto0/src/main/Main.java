@@ -311,11 +311,11 @@ public class Main {
 
         if (enunciados.size() > 0) {
             int cantidadEnus = 0;
-            System.out.println("Seleccione id del enunciado referente a la convocatoria: ");
-            for (int i = 0; enunciados.size() > i; i++) {
-                System.out.println(enunciados.get(i).getId() + ". " + enunciados.get(i).getDescripcion());
-                cantidadEnus = i + 1;
-            }
+            System.out.println("Seleccione el numero de enunciado: ");
+                for (int i = 0; enunciados.size() > i; i++) {
+                    System.out.println(enunciados.get(i).getId() + ". " + enunciados.get(i).getDescripcion());
+                    cantidadEnus = i + 1;
+                }
             boolean error;
             do {
                 enunciado = Util.leerInt();
@@ -331,8 +331,9 @@ public class Main {
         }
         convocatorias = c.consultarConvocatoriaPorEnunciado(enunciado);
         if (convocatorias.size() > 0) {
+            System.out.println("El enunciado seleccionado se ha utilizado en "+ convocatorias.size() +" convocatorias");
             for (int i = 0; i < convocatorias.size(); i++) {
-                System.out.println((i + 1)+ ". " + convocatorias.get(i).getConvocatoria());
+                System.out.println("\t" + "- "+ convocatorias.get(i).getConvocatoria());
             }
         } else {
             System.out.println("No se encontraron convocatorias para ese enunciado");
