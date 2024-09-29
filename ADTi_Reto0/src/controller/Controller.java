@@ -229,7 +229,7 @@ public class Controller implements IController {
         con = conection.openConnection();
 
         try {
-            stmt = con.prepareStatement(SELECTenunciado);
+            stmt = con.prepareStatement(SELECTconvocatoria);
 
             // Cargamos los parametros
             stmt.setInt(1, enunciadoId);

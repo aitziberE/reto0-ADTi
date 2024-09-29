@@ -108,23 +108,21 @@ public class Main {
             int enunciado = 0;
             // Sacar los enunciados existentes
             ArrayList<Enunciado> enunciados;
-            
+
             enunciados = c.getAllEnunciados();
 
             if (enunciados.size() > 0) {
                 int cantidadEnus = 0;
-                System.out.println("Seleccione num referente al enunciado que desea asociar:");
+                System.out.println("Seleccione id referente al enunciado que desea asociar:");
                 for (int i = 0; enunciados.size() > i; i++) {
                     System.out.println(enunciados.get(i).getId() + ". " + enunciados.get(i).getDescripcion());
                     cantidadEnus = i + 1;
                 }
-                int userSelection;
                 boolean error;
                 do {
-                    userSelection = Util.leerInt();
-                    if (userSelection <= cantidadEnus && userSelection > 0) {
+                    enunciado = Util.leerInt();
+                    if (enunciado <= cantidadEnus && enunciado > 0) {
                         error = false;
-                        enunciado = userSelection;
                     } else {
                         System.out.println("No existe ese enunciado, elige una de los " + cantidadEnus);
                         error = true;
@@ -133,7 +131,7 @@ public class Main {
             } else {
                 System.out.println("No se encontraron enunciados");
             }
-            
+
             c.crearConvocatoria(convocatoria, descripcion, fecha, curso, enunciado);
 
             // lo que habia hecho el iñigo
@@ -278,8 +276,42 @@ public class Main {
         }
     }
 
-    private static void checkConvocatoria(Controller c) {
+    private static void checkConvocatoria(Controller c) throws CreateException {
         // Consultar en que convocatorias se ha utilizado un enunciado concreto.
+        // Sacar los enunciados existentes
+        ArrayList<ConvocatoriaExamen> convocatorias;
+        ArrayList<Enunciado> enunciados;
+        int enunciado = 0;
+        enunciados = c.getAllEnunciados();
+
+        if (enunciados.size() > 0) {
+            int cantidadEnus = 0;
+            System.out.println("Seleccione id del enunciado referente a la convocatoria: ");
+            for (int i = 0; enunciados.size() > i; i++) {
+                System.out.println(enunciados.get(i).getId() + ". " + enunciados.get(i).getDescripcion());
+                cantidadEnus = i + 1;
+            }
+            boolean error;
+            do {
+                enunciado = Util.leerInt();
+                if (enunciado <= cantidadEnus && enunciado > 0) {
+                    error = false;
+                } else {
+                    System.out.println("No existe ese enunciado, elige una de los " + cantidadEnus);
+                    error = true;
+                }
+            } while (error);
+        } else {
+            System.out.println("No se encontraron enunciados");
+        }
+        convocatorias = c.consultarConvocatoriaPorEnunciado(enunciado);
+        if (convocatorias.size() > 0) {
+            for (int i = 0; i < convocatorias.size(); i++) {
+                System.out.println((i + 1)+ ". " + convocatorias.get(i).getConvocatoria());
+            }
+        } else {
+            System.out.println("No se encontraron convocatorias para ese enunciado");
+        }
     }
 
     private static void viewDocument(Controller c) throws CreateException {
