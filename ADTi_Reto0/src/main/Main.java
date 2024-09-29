@@ -133,36 +133,6 @@ public class Main {
             }
 
             c.crearConvocatoria(convocatoria, descripcion, fecha, curso, enunciado);
-
-            // lo que habia hecho el iñigo
-            /*      String nivelInput;
-            Dificultad nivel = null;
-            boolean disponibleInput;
-            
-            System.out.println("Introduzca los datos del enunciado a crear: \nDescripción:");
-            String descripcionInput = Util.introducirCadena();
-            do {
-            System.out.println("Dificultad: (Baja, Media, Alta)");
-            nivelInput = Util.introducirCadena();
-            try {
-            nivel = Dificultad.valueOf(nivelInput);
-            
-            } catch (IllegalArgumentException e) {
-            System.out.println(e);
-            }
-            } while (nivelInput == null);
-            
-            System.out.println("Disponibilidad: (Activado / Desactivado)");
-            if (Util.introducirCadena().equalsIgnoreCase("activado")) {
-            disponibleInput = true;
-            } else {
-            disponibleInput = false;
-            }
-            System.out.println("Ruta:");
-            //TODO buscar forma de hacer esto
-            String rutaInput = "";
-            
-            Enunciado enunciado = new Enunciado(descripcionInput, nivel, disponibleInput, rutaInput); */
         } catch (CreateException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -366,10 +336,67 @@ public class Main {
     }
 
     private static void asignEnunciado(Controller c) {
-        // pedir id de convocatoria e id de enunciado
-        // sobreescribir el enunciado que tenia esa convocatoria o asignarselo sin más.
-        // boolean añadidoConExito = metodMOreno(id conv, id enunc)
-
-        //UnidadDidactica unidad = new UnidadDidactica(acronimoUD, tituloUD, evaluacionUD, descripcionUD);
+        try {
+            // Asignar un enunciado a una convocatoria
+            boolean asignarEnunciadoAConvocatoriaSuccess= false;
+            ArrayList<ConvocatoriaExamen> convocatorias;
+            ArrayList<Enunciado> enunciados;
+            int enunciado = 0;
+            int conv = 0;
+            enunciados = c.getAllEnunciados();
+            convocatorias=c.getAllConvocatoriasExamen();
+            
+            if (enunciados.size() > 0) {
+                int cantidadEnus = 0;
+                System.out.println("Seleccione el numero de enunciado: ");
+                for (int i = 0; enunciados.size() > i; i++) {
+                    System.out.println(enunciados.get(i).getId() + ". " + enunciados.get(i).getDescripcion());
+                    cantidadEnus = i + 1;
+                }
+                boolean error;
+                do {
+                    enunciado = Util.leerInt();
+                    if (enunciado <= cantidadEnus && enunciado > 0) {
+                        error = false;
+                    } else {
+                        System.out.println("No existe ese enunciado, elige uno de los " + cantidadEnus);
+                        error = true;
+                    }
+                } while (error);
+            } else {
+                System.out.println("No se encontraron enunciados");
+            }
+            
+            if (convocatorias.size() > 0) {
+                int cantidadConv = 0;
+                System.out.println("Seleccione el numero de convocatoria: ");
+                for (int i = 0; convocatorias.size() > i; i++) {
+                    System.out.println(i+1 +". " + convocatorias.get(i).getConvocatoria());
+                    cantidadConv = i + 1;
+                }
+                boolean error;
+                do {
+                    conv = Util.leerInt();
+                    if (conv <= cantidadConv && conv > 0) {
+                        error = false;
+                    } else {
+                        System.out.println("No existe esa convocatorias, elige una de las " + cantidadConv);
+                        error = true;
+                    }
+                } while (error);
+            } else {
+                System.out.println("No se encontraron convocatorias");
+            }
+            
+            asignarEnunciadoAConvocatoriaSuccess =  c.asignarEnunciadoAConvocatoria(enunciados.get(enunciado-1).getId(), convocatorias.get(conv-1).getConvocatoria());
+            
+            if (asignarEnunciadoAConvocatoriaSuccess) {
+                System.out.println("operación realizada");
+            } else {
+                System.out.println("hubo algun error");
+            }
+        } catch (CreateException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

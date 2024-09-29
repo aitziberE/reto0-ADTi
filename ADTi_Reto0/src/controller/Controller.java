@@ -73,9 +73,9 @@ public class Controller implements IController {
     /**
      * Asignar un enunciado a una convocatoria
      */
-    final String UPDATEconvocatoria = "UPDATE ConvocatoriaExamen SET enunciado_id = ? WHERE convocatoria = ?";
     final String UPDATEud_e = "INSERT INTO UnidadDidactica_Enunciado (enunciado_id, unidad_didactica_id) VALUES (?, ?)";
     final String UPDATEconvocatoriaExamen = "UPDATE ConvocatoriaExamen SET enunciado_id = ? WHERE convocatoria = ?";
+    final String UPDATEconvocatoriaExamenSetEnunciado = "UPDATE ConvocatoriaExamen SET enunciado_id = ? WHERE convocatoria = ?";
     
     @Override
     public void crearUnidadDidactica(String acronimo, String titulo, String evaluacion, String descripcion) throws CreateException {
@@ -418,7 +418,7 @@ public class Controller implements IController {
         // Abrimos la conexión
         con = conection.openConnection();
         try {
-            stmt = con.prepareStatement(UPDATEconvocatoria);
+            stmt = con.prepareStatement(UPDATEconvocatoriaExamenSetEnunciado);
 
             stmt.setInt(1, enunciadoId);
             stmt.setString(2, convocatoria);
